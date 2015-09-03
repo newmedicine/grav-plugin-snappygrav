@@ -76,8 +76,6 @@ zoom: 1                 # Use this zoom factor (<float> default 1)
 
 > Note: The expected values for the Paper Size are really many, to know what you are going to read them directly in the [source file](https://github.com/wkhtmltopdf/wkhtmltopdf/blob/master/src/lib/pdfsettings.cc) from line 174 to line 203.
 
-# Customizing the Settings
-
 # Creating a "SnappyGrav" Link
 
 ![SnappyGrav](assets/readme_1.png)
