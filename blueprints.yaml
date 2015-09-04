@@ -1,0 +1,122 @@
+name: SnappyGrav
+version: 1.0.0
+description: Save a page in PDF format
+icon: file-pdf-o
+author:
+  name: iusvar
+  email: severoiuliano@gmail.com
+  url: http://iusvar.hol.es
+homepage: https://github.com/iusvar/grav-plugin-snappygrav
+keywords: grav, pdf, output, SnappyGrav
+bugs: https://github.com/iusvar/grav-plugin-snappygrav/issues
+license: MIT
+
+form:
+  validation: strict
+  fields:
+
+    enabled:
+      type: toggle
+      label: Plugin status
+      highlight: 1
+      default: 0
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+
+    wk_path:
+      type: text
+      size: small
+      label: Wkhtmltopdf Path
+      help: "Path of Binary Wkhtmltopdf"
+      validate:
+        type: string
+
+    grayscale:
+      type: toggle
+      label: Monochrome printout
+      help: "PDF will be generated in grayscale if true"
+      highlight: 1
+      default: 0
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+
+    margin_bottom:
+      type: text
+      size: small
+      label: Bottom Margin
+      help: "Set the page bottom margin (default 10mm)"
+      default: 10
+      validate:
+        type: number
+
+    margin_left:
+      type: text
+      size: small
+      label: Left Margin
+      help: "Set the page left margin (default 10mm)"
+      default: 10
+      validate:
+        type: number
+
+    margin_right:
+      type: text
+      size: small
+      label: Right Margin
+      help: "Set the page right margin (default 10mm)"
+      default: 10
+      validate:
+        type: number
+
+    margin_top:
+      type: text
+      size: small
+      label: Top Margin
+      help: "Set the page top margin (default 10mm)"
+      default: 10
+      validate:
+        type: number
+
+    orientation:
+      type: text
+      size: small
+      label: Page Orientation
+      help: "Set orientation to Landscape or Portrait"
+      default: Portrait
+      validate:
+        type: string
+
+    page_size:
+      type: text
+      size: small
+      label: Page Size
+      help: "Set paper size to: A4, Letter, etc."
+      default: A4
+      validate:
+        type: string
+        
+    title:
+      type: toggle
+      label: Document Title
+      help: "Puts the property Title in the pdf document"
+      highlight: 1
+      default: 1
+      options:
+        1: Enabled
+        0: Disabled
+      validate:
+        type: bool
+
+    zoom:
+      type: text
+      size: small
+      label: Zoom Factor
+      help: "Use this zoom factor (default 1)"
+      default: 10
+      validate:
+        type: number
