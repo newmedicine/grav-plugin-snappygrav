@@ -42,19 +42,10 @@ class SnappyGravPlugin extends Plugin
         }
         if($pdf == ":pdf" ){
             $this->enable([
-                'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
                 'onPageProcessed' => ['onPageProcessed', 0],
                 'onTwigSiteVariables' => ['onTwigSiteVariables', 0]
             ]);
         }
-    }
-    
-    /**
-     * Add current directory to twig lookup paths.
-     */
-    public function onTwigTemplatePaths()
-    {
-        $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
     }
 
     /**
@@ -93,32 +84,32 @@ class SnappyGravPlugin extends Plugin
         $pages = $this->grav['pages'];
         $start_date = time();
         $archives = array();
-        $filters = (array) $this->config->get('plugins.archives.filters'); // change to snappygrav
-        $operator = $this->config->get('plugins.archives.filter_combinator'); // change to snappygrav
+        $filters = (array) $this->config->get('plugins.snappygrav.filters');
+        $operator = $this->config->get('plugins.snappygrav.filter_combinator');
+        //$this->grav['debugger']->addMessage($filters);
         if (count($filters) > 0) {
             $collection = new Collection();
             $collection->append($taxonomy_map->findTaxonomy($filters, $operator)->toArray());
-            $collection = $collection->order($this->config->get('plugins.archives.order.by'), $this->config->get('plugins.archives.order.dir')); // change to snappygrav
-            $date_format = $this->config->get('plugins.archives.date_display_format'); // change to snappygrav
+            $collection = $collection->order($this->config->get('plugins.snappygrav.order.by'), $this->config->get('plugins.snappygrav.order.dir'));
+            $date_format = $this->config->get('plugins.snappygrav.date_display_format');
 
             $uri_params = $uri->params();
             $uri_params = str_replace(':pdf', "", $uri_params);
             $uri_params = str_replace('/', "", $uri_params);
 
+            //$this->grav['debugger']->addMessage($collection);
+
             $vars = array();
             
             foreach ($collection as $page) {
+
                 $start_date = $page->date() < $start_date ? $page->date() : $start_date;
                 $archives[date($date_format, $page->date())][] = $page;
 
                 $page_route = $page->route();
                 $pieces = explode("/", $page_route);
                 $len = count($pieces);
-                $target = $pieces[2];
-                //$this->grav['debugger']->addMessage("page route: ".$page->route());
-
-                //$twig = $this->grav['twig'];
-                //$twig->processString($params['body'], $vars) : '{% include "partials/snappygrav.html.twig" %}';
+                $target = $pieces[$len-1];
 
                 /*
                 http://stackoverflow.com/questions/22105433/snappy-wkhtmltopdf-wrapper-send-generated-html-file-to-browser
@@ -139,7 +130,8 @@ class SnappyGravPlugin extends Plugin
                     $page_title = $page->title();
                     $page_serial = $page->date();
                     $page_date = date("d-m-Y",$page_serial);
-                    $page_header_author = $page->header()->author;
+                    $page_header_author = "";
+                    if(isset( $page->header()->author )) $page_header_author = $page->header()->author;
                     $page_content = $page->content();
                     //$page_content = str_replace('{.float_right}', "", $page_content);
                     //$page_content = str_replace('{.float_left}', "", $page_content);
@@ -188,12 +180,6 @@ class SnappyGravPlugin extends Plugin
                     $zoom = $this->config->get('plugins.snappygrav.zoom');
                     if($zoom) $snappy->setOption('zoom', $zoom);
 
-                    /*
-                     * the heart of the procedure
-                     * - building html string
-                     * - header redirection
-                     * - return PDF of HTML $html as string
-                     */
                     $html = "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><h2><center>". $page_title ."</center></h2><center><b>". $page_header_author ."</b></center><br/><center><b>". $page_date ."</b></center>".$page_content;
                     header('Content-Type: application/pdf');
                     header('Content-Disposition: attachment; filename="'.$page_slug.'.pdf"');
