@@ -55,6 +55,8 @@ The `snappygrav` plugin must be included into your theme. where you want to disp
         <a href="{{ page.url }}:pdf" title="Send to PDF"><i class="fa fa-file-pdf-o"></i></a>
     {% endif %}
 
+For now I have tested the `snappygrav` plugin for two types of sites, with the Blog Site skeleton with Antimatter theme and RTFM Site skeleton with Learn2 theme.
+
 ## Settings Defaults
 
 You can do this configuration in the plugin's configuration.  Simply copy the `user/plugins/snappygrav/snappygrav.yaml` into `user/config/plugins/snappygrav.yaml` and make your modifications.
