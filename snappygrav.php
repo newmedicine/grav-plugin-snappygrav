@@ -28,7 +28,7 @@ class SnappyGravPlugin extends Plugin
             $this->active = false;
             return;
         }
-
+        /** @var Uri $uri */
         $uri = $this->grav['uri'];
         $route = $this->config->get('plugins.snappygrav.route');
 
