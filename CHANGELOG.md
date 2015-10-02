@@ -1,3 +1,9 @@
+# v1.0.3
+## 10/03/2015
+
+1. [](#bugfix) 
+    * Bugfix in blueprints.yaml
+
 # v1.0.2
 ## 10/02/2015
 
