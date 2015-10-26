@@ -79,19 +79,14 @@ class SnappyGravPlugin extends Plugin
             $target = $pieces[$len-1];
 
             if($uri_params == $target){
-
                 //Page variables
                 $content['page_title'] = $page_title = $page->title();
-
                 $page_serial = $page->date();
                 $content['page_date'] = $page_date = date("d-m-Y",$page_serial);
-
                 $page_header_author = "";
                 if(isset( $page->header()->author )) $page_header_author = $page->header()->author;
                 $content['page_header_author'] = $page_header_author;
-
                 $content['page_content'] = $page_content = $page->content();
-
                 $content['page_slug'] = $page_slug = $page->slug();
 
                 //PDF
