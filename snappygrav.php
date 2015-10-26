@@ -40,7 +40,10 @@ class SnappyGravPlugin extends Plugin
         }
         if($pdf == ":pdf" ){
             $this->enable([
-                'onCollectionProcessed' => ['onCollectionProcessed', 0]
+                'onCollectionProcessed' => ['onCollectionProcessed', 0],
+                //Twig
+                'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
+                'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
             ]);
         }
     }
@@ -65,9 +68,11 @@ class SnappyGravPlugin extends Plugin
         $uri_params = $uri->params();
         $uri_params = str_replace(':pdf', "", $uri_params);
         $uri_params = str_replace('/', "", $uri_params);
-            
+        $html = [];
+
         foreach ($collection as $page) {
 
+            $content = [];
             $page_route = $page->route();
             $pieces = explode("/", $page_route);
             $len = count($pieces);
@@ -75,15 +80,21 @@ class SnappyGravPlugin extends Plugin
 
             if($uri_params == $target){
 
-                $page_title = $page->title();
+                //Page variables
+                $content['page_title'] = $page_title = $page->title();
+
                 $page_serial = $page->date();
-                $page_date = date("d-m-Y",$page_serial);
+                $content['page_date'] = $page_date = date("d-m-Y",$page_serial);
+
                 $page_header_author = "";
                 if(isset( $page->header()->author )) $page_header_author = $page->header()->author;
-                $page_content = $page->content();
+                $content['page_header_author'] = $page_header_author;
 
-                $page_slug = $page->slug();
+                $content['page_content'] = $page_content = $page->content();
 
+                $content['page_slug'] = $page_slug = $page->slug();
+
+                //PDF
                 $wk_path = $this->config->get('plugins.snappygrav.wk_path');
                 if($wk_path=="") $wk_path = 'usr/bin/wkhtmltopdf-i386';
 
@@ -121,15 +132,42 @@ class SnappyGravPlugin extends Plugin
 
                 $hastitle = $this->config->get('plugins.snappygrav.title');
                 if($hastitle) $snappy->setOption('title', $page_title);
-                   
+
                 $zoom = $this->config->get('plugins.snappygrav.zoom');
                 if($zoom) $snappy->setOption('zoom', $zoom);
 
-                $html = "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'><h2><center>". $page_title ."</center></h2><center><b>". $page_header_author ."</b></center><br/><center><b>". $page_date ."</b></center>".$page_content;
-                header('Content-Type: application/pdf');
-                header('Content-Disposition: attachment; filename="'.$page_slug.'.pdf"');
-                echo $snappy->getOutputFromHtml($html);
+                /** @var Twig $twig */
+                $twig = $this->grav['twig'];
+                $this->grav['twig']->twig_vars['snappygrav'] = $content;
+                $template = "snappygrav.html.twig";
+
+                $html[] = $twig->processTemplate($template);
             }
         }
+        //Saves ie https problems
+        header("Cache-Control: public");
+        header("Content-Type: application/pdf");
+        header('Pragma: private');
+        header('Expires: 0');
+        header('Content-Disposition: attachment; filename="'.$page_slug.'.pdf"');
+
+        echo ($snappy->getOutputFromHtml($html));
+    }
+
+    /**
+     * Handles template and specific CSS for PDF template
+     */
+    public function onTwigSiteVariables() {
+        if ($this->config->get('plugins.snappygrav.built_in_css')) {
+            $this->grav['assets']->add('plugin://snappygrav/assets/css/snappygrav.css');
+        }
+    }
+
+    /**
+     * Add current directory to Twig lookup paths.
+     */
+    public function onTwigTemplatePaths()
+    {
+      $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
     }
 }
