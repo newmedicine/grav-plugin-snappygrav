@@ -30,15 +30,10 @@ class SnappyGravPlugin extends Plugin
         }
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
-        $route = $this->config->get('plugins.snappygrav.route');
+        $params = $uri->params(null, true);
 
-        $params = $uri->params();
-        $len = strlen($params);
-        $pdf="";
-        if($len > 0){
-            $pdf = substr($params, -4);
-        }
-        if($pdf == ":pdf" ){
+        //Get pdf or completepdf
+        if ((count($params) > 0) && (reset($params) == "pdf" || reset($params) == "completepdf")){
             $this->enable([
                 'onCollectionProcessed' => ['onCollectionProcessed', 0],
                 //Twig
@@ -65,9 +60,15 @@ class SnappyGravPlugin extends Plugin
         }
 
         $uri = $this->grav['uri'];
-        $uri_params = $uri->params();
-        $uri_params = str_replace(':pdf', "", $uri_params);
-        $uri_params = str_replace('/', "", $uri_params);
+        $uri_params = $uri->params(null, true);
+
+        //Exit if we get there with empty array (eg no :pdf / :completepdf params)
+        if (count($uri_params) == 0) {
+            return;
+        }
+
+        $option = reset($uri_params);
+        $slug = key($uri_params);
         $html = [];
 
         foreach ($collection as $page) {
@@ -78,7 +79,7 @@ class SnappyGravPlugin extends Plugin
             $len = count($pieces);
             $target = $pieces[$len-1];
 
-            if($uri_params == $target){
+            if($slug == $target || $option == "completepdf"){
                 //Page variables
                 $content['page_title'] = $page_title = $page->title();
                 $page_serial = $page->date();
@@ -139,12 +140,14 @@ class SnappyGravPlugin extends Plugin
                 $html[] = $twig->processTemplate($template);
             }
         }
+
+        $filename = $option == "completepdf" ? parse_url($uri->base())['host'] : $page_slug;
         //Saves ie https problems
         header("Cache-Control: public");
         header("Content-Type: application/pdf");
         header('Pragma: private');
         header('Expires: 0');
-        header('Content-Disposition: attachment; filename="'.$page_slug.'.pdf"');
+        header('Content-Disposition: attachment; filename="'. $filename .'.pdf"');
 
         echo ($snappy->getOutputFromHtml($html));
     }
