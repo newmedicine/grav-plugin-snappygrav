@@ -1,6 +1,6 @@
 name: SnappyGrav
-version: 1.0.3
-description: Save a page in PDF format
+version: 1.1.0
+description: Save a page or all website in PDF format
 icon: file-pdf-o
 author:
   name: iusvar
@@ -147,6 +147,6 @@ form:
       size: small
       label: Zoom Factor
       help: "Use this zoom factor (default 1)"
-      default: 10
+      default: 1
       validate:
         type: number
