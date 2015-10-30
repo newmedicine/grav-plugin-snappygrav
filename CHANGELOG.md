@@ -1,3 +1,10 @@
+# v1.1.1
+## 10/30/2015
+
+1. [](#bugfix)
+    * Bugfix in blueprints.yaml [#5](https://github.com/iusvar/grav-plugin-snappygrav/pull/5)
+    * Updated snappygrav.yaml
+
 # v1.1.0
 ## 10/28/2015
 

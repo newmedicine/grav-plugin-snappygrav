@@ -1,6 +1,7 @@
 enabled: true
-wk_path: 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386'
+built_in_css: true              # Provide a CSS to customize PDF rendering
 
+wk_path: 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386'
 #allow <path>                   Allow the file or files from the specified folder to be loaded (repeatable)
 #collate                        Collate when printing multiple copies
 #cookie <name> <value>          Set an additional cookie (repeatable)
@@ -45,5 +46,3 @@ title: true                     # I prefer True or False, getting title from sit
 #username <username>            HTTP Authentication username
 #version                        Output version information an exit
 zoom: 1                         # Use this zoom factor (default 1) <float>
-
-built_in_css: true              # Provide a CSS to customize PDF rendering
