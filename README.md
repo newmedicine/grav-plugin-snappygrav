@@ -63,6 +63,7 @@ You can do this configuration in the plugin's configuration.  Simply copy the `u
 
 ```
 enabled: true           # global enable/disable the entire plugin
+built_in_css: false     # Use built in CSS
 wk_path: ''             # Default 'usr/bin/wkhtmltopdf-i386'
 grayscale: false        # PDF will be generated in grayscale if true (default = false)
 margin_bottom: 10       # Set the page bottom margin (<unitreal> default 10mm)
