@@ -1,14 +1,15 @@
 name: SnappyGrav
-version: 1.1.1
+version: 1.2.0
 description: Save a page or all website in PDF format
 icon: file-pdf-o
 author:
-  name: iusvar
+  name: Severo Iuliano
   email: severoiuliano@gmail.com
   url: http://iusvar.hostfree.pw/
 homepage: https://github.com/iusvar/grav-plugin-snappygrav
-keywords: grav, pdf, output, SnappyGrav
+keywords: grav, plugin, snappygrav
 bugs: https://github.com/iusvar/grav-plugin-snappygrav/issues
+readme: https://github.com/iusvar/grav-plugin-snappygrav/blob/master/README.md
 license: MIT
 
 form:
@@ -17,95 +18,107 @@ form:
 
     enabled:
       type: toggle
-      label: Plugin status
+      label: PLUGIN_ADMIN.PLUGIN_STATUS
       highlight: 1
       default: 0
       options:
-        1: Enabled
-        0: Disabled
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
 
     built_in_css:
       type: toggle
-      label: Use built in CSS
+      label: SNAPPYGRAV_PLUGIN.USE_BUILT_IN_CSS
       highlight: 1
       default: 0
       options:
-        1: Enabled
-        0: Disabled
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
 
     wk_path:
       type: text
       size: large
-      label: Wkhtmltopdf Path
-      help: "Path of Binary Wkhtmltopdf"
+      label: SNAPPYGRAV_PLUGIN.WKHTMLTOPDF_PATH
+      help: SNAPPYGRAV_PLUGIN.WKHTMLTOPDF_PATH_HELP
+      validate:
+        type: string
+
+    slug_blog:
+      type: text
+      size: large
+      label: SNAPPYGRAV_PLUGIN.SLUG_BLOG
+      help: SNAPPYGRAV_PLUGIN.SLUG_BLOG_HELP
       validate:
         type: string
 
     grayscale:
       type: toggle
-      label: Monochrome printout
-      help: "PDF will be generated in grayscale if true"
+      label: SNAPPYGRAV_PLUGIN.MONOCHROME_PRINTOUT
+      help: SNAPPYGRAV_PLUGIN.MONOCHROME_PRINTOUT_HELP
       highlight: 1
       default: 0
       options:
-        1: Enabled
-        0: Disabled
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
 
     margin_bottom:
       type: text
-      size: small
-      label: Bottom Margin
-      help: "Set the page bottom margin (default 10mm)"
+      size: x-small
+      label: SNAPPYGRAV_PLUGIN.BOTTOM_MARGIN
+      help: SNAPPYGRAV_PLUGIN.BOTTOM_MARGIN_HELP
+      append: mm
       default: 10
       validate:
         type: number
 
     margin_left:
       type: text
-      size: small
-      label: Left Margin
-      help: "Set the page left margin (default 10mm)"
+      size: x-small
+      label: SNAPPYGRAV_PLUGIN.LEFT_MARGIN
+      help: SNAPPYGRAV_PLUGIN.LEFT_MARGIN_HELP
+      append: mm
       default: 10
       validate:
         type: number
 
     margin_right:
       type: text
-      size: small
-      label: Right Margin
-      help: "Set the page right margin (default 10mm)"
+      size: x-small
+      label: SNAPPYGRAV_PLUGIN.RIGHT_MARGIN
+      help: SNAPPYGRAV_PLUGIN.RIGHT_MARGIN_HELP
+      append: mm
       default: 10
       validate:
         type: number
 
     margin_top:
       type: text
-      size: small
-      label: Top Margin
-      help: "Set the page top margin (default 10mm)"
+      size: x-small
+      label: SNAPPYGRAV_PLUGIN.TOP_MARGIN
+      help: SNAPPYGRAV_PLUGIN.TOP_MARGIN_HELP
+      append: mm
       default: 10
       validate:
         type: number
 
     orientation:
       type: select
-      label: Page Orientation
+      label: SNAPPYGRAV_PLUGIN.PAGE_ORIENTATION
       size: small
       default: portrait
       options:
-        landscape: Landscape
-        portrait: Portrait
-      help: "Set orientation to Landscape or Portrait"
+        landscape: SNAPPYGRAV_PLUGIN.LANDSCAPE
+        portrait: SNAPPYGRAV_PLUGIN.PORTRAIT
+      help: SNAPPYGRAV_PLUGIN.PAGE_ORIENTATION_HELP
 
     page_size:
       type: select
-      label: Page Size
+      label: SNAPPYGRAV_PLUGIN.PAGE_SIZE
       size: small
       default: a4
       options:
@@ -133,31 +146,31 @@ form:
         c5e: C5E
         comm10e: Comm10E
         dle: DLE
-        executive: Executive
-        folio: Folio
-        ledger: Ledger
-        legal: Legal
-        letter: Letter
-        tabloid: Tabloid
-      help: "Set paper size to: A4, Letter, etc."
+        executive: SNAPPYGRAV_PLUGIN.EXECUTIVE
+        folio: SNAPPYGRAV_PLUGIN.FOLIO
+        ledger: SNAPPYGRAV_PLUGIN.LEDGER
+        legal: SNAPPYGRAV_PLUGIN.LEGAL
+        letter: SNAPPYGRAV_PLUGIN.LETTER
+        tabloid: SNAPPYGRAV_PLUGIN.TABLOID
+      help: SNAPPYGRAV_PLUGIN.PAGE_SIZE_HELP
         
     title:
       type: toggle
-      label: Document Title
-      help: "Puts the property Title in the pdf document"
+      label: SNAPPYGRAV_PLUGIN.DOCUMENT_TITLE
+      help: SNAPPYGRAV_PLUGIN.DOCUMENT_TITLE_HELP
       highlight: 1
       default: 1
       options:
-        1: Enabled
-        0: Disabled
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
 
     zoom:
       type: text
       size: small
-      label: Zoom Factor
-      help: "Use this zoom factor (default 1)"
+      label: SNAPPYGRAV_PLUGIN.ZOOM_FACTOR
+      help: SNAPPYGRAV_PLUGIN.ZOOM_FACTOR_HELP
       default: 1
       validate:
         type: number

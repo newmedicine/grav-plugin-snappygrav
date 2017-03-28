@@ -1,3 +1,13 @@
+# v1.2.0
+## 03/28/2017
+
+1. [](#new)
+    * Simplified connection with the creation of a function TWIG
+    * Added admin translations
+    * Added english and italian translations
+1. [](#bugfix)
+    * Bugfix plugin [#6](https://github.com/iusvar/grav-plugin-snappygrav/issues/6), [#7](https://github.com/iusvar/grav-plugin-snappygrav/issues/7) and [#10](https://github.com/iusvar/grav-plugin-snappygrav/issues/10)
+
 # v1.1.1
 ## 10/30/2015
 
@@ -45,7 +55,4 @@
 ## 09/04/2015
 
 1. [](#new)
-    * ChangeLog started...
-
-
-
+    * Initial release.

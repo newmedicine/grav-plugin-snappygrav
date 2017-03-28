@@ -28,6 +28,11 @@ class SnappyGravPlugin extends Plugin
             $this->active = false;
             return;
         }
+
+        $this->enable([
+            'onTwigInitialized'     => ['onTwigInitialized', 0],
+        ]);
+            
         /** @var Uri $uri */
         $uri = $this->grav['uri'];
         $params = $uri->params(null, true);
@@ -41,6 +46,45 @@ class SnappyGravPlugin extends Plugin
                 'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
             ]);
         }
+    }
+
+    /**
+     * Add simple `thumbs()` Twig function
+     */
+    public function onTwigInitialized() {
+        $this->grav['twig']->twig()->addFunction(
+            new \Twig_SimpleFunction('snappygrav', [$this, 'generateLink'])
+        );
+    }
+
+    public function generateLink($id=null, $options = [])
+    {
+        $param_sep = $this->grav['config']->get('system.param_sep', ':');
+
+        $slug_blog = 'blog';
+        $slug_blog = $this->config->get('plugins.snappygrav.slug_blog');
+
+        $uri = $this->grav['uri'];
+        $basename = $uri->basename();
+        $current_theme = $this->grav['themes']->current();
+
+        $language = $this->grav['language'];
+        $single = $language->translate(['SNAPPYGRAV_PLUGIN.GET_PDF']);
+        $full = $language->translate(['SNAPPYGRAV_PLUGIN.GET_FULL_PDF']);
+        
+        $html = '<a href="'.$this->grav['base_url'] . $id . $param_sep . 'pdf" title="'.$single.'"><i class="fa fa-file-pdf-o"></i></a>';
+        if ($id === null) {
+            $html = '<a href="'.$this->grav['base_url'] . DS . $param_sep . 'completepdf" title="'.$full.'"><i class="fa fa-file-pdf-o"></i></a>';
+        } else {
+            if ( ($current_theme == 'learn2') && ( empty($basename) ) ) {
+                $html = '<a href="'.$this->grav['base_url'] . $id . $param_sep . 'pdf" title="'.$single.'"><i class="fa fa-file-pdf-o"></i></a>';
+            }
+            if ( $current_theme == 'antimatter' ) {
+                $html = '<a href="'.$this->grav['base_url'] . DS . $slug_blog . DS . $id . $param_sep . 'pdf" title="'.$single.'"><i class="fa fa-file-pdf-o"></i></a>';
+            }
+        }
+
+        return $html;
     }
 
     /**

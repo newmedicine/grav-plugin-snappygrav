@@ -1,5 +1,3 @@
-# grav-plugin-snappygrav
-SnappyGrav Plugin for Grav CMS (getgrav.org)
 # Grav SnappyGrav Plugin
 
 `snappygrav` is a simple [Grav](http://github.com/getgrav/grav) plugin that allows you to easily save a page in PDF format.
@@ -47,13 +45,13 @@ For amd64 replace with wkhtmltopdf-amd64.
 
 # Usage
 
+> IMPORTANT: Version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
+
 The `snappygrav` plugin to include images requires a `true` value for the `Absolute URLs` in the `/your/site/grav/user/config/system.yaml` file. If you are using `Admin` plugin select the following links: `Configuration`, `System`, `Yes` for `Absolute URLs` and save.
 
 The `snappygrav` plugin must be included into your theme. where you want to display the PDF icon, as follows:
 
-    {% if config.plugins.snappygrav.enabled %}
-        <a href="{{ page.url }}:pdf" title="Send to PDF"><i class="fa fa-file-pdf-o"></i></a>
-    {% endif %}
+    {{ snappygrav(page.route) }}
 
 For now I have tested the `snappygrav` plugin for two types of sites, with the Blog Site skeleton with Antimatter theme and RTFM Site skeleton with Learn2 theme.
 
@@ -65,6 +63,7 @@ You can do this configuration in the plugin's configuration.  Simply copy the `u
 enabled: true           # global enable/disable the entire plugin
 built_in_css: false     # Use built in CSS
 wk_path: ''             # Default 'usr/bin/wkhtmltopdf-i386'
+slug_blog: blog
 grayscale: false        # PDF will be generated in grayscale if true (default = false)
 margin_bottom: 10       # Set the page bottom margin (<unitreal> default 10mm)
 margin_left: 10         # Set the page left margin (<unitreal> default 10mm)
@@ -80,11 +79,9 @@ zoom: 1                 # Use this zoom factor (<float> default 1)
 
 ## Complete PDF
 
-You can print your all site as a PDF by replacing :pdf by :completepdf in the url :
+You can print your all site as a PDF with:
 
-    {% if config.plugins.snappygrav.enabled %}
-        <a href="{{ page.url }}:completepdf" title="Get a complete PDF"><i class="fa fa-file-pdf-o"></i></a>
-    {% endif %}
+    {{ snappygrav() }}
 
 > Warning : it as been tested for a standard installation, on a 50+ pages grav website.
 
