@@ -13,6 +13,9 @@ en:
     SLUG_BLOG: Folder blog
     SLUG_BLOG_HELP: Name of the blog folder without slash (either before or after)
 
+    PREFACE: Preface
+    PREFACE_HELP: Print a page with the title, author and date.
+
     MONOCHROME_PRINTOUT: Monochrome printout
     MONOCHROME_PRINTOUT_HELP: PDF will be generated in grayscale if true
 
@@ -62,6 +65,9 @@ it:
 
     SLUG_BLOG: Cartella blog
     SLUG_BLOG_HELP: Nome della cartella blog senza barra (né prima né dopo)
+
+    PREFACE: Prefazione
+    PREFACE_HELP: Stampa una pagina contenente titolo, autore e data.
 
     MONOCHROME_PRINTOUT: Stampa in bianco e nero
     MONOCHROME_PRINTOUT_HELP: PDF verrà generato in scala di grigi se è vero
