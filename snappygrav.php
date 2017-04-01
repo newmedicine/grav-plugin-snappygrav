@@ -29,6 +29,8 @@ class SnappyGravPlugin extends Plugin
             return;
         }
 
+        require_once __DIR__ . '/vendor/autoload.php';
+
         $this->enable([
             'onTwigInitialized'     => ['onTwigInitialized', 0],
         ]);
@@ -135,8 +137,8 @@ class SnappyGravPlugin extends Plugin
                 $content['page_slug'] = $page_slug = $page->slug();
 
                 //PDF
-                $wk_path = $this->config->get('plugins.snappygrav.wk_path');
-                if($wk_path=="") $wk_path = 'usr/bin/wkhtmltopdf-i386';
+                $wk_path = __DIR__ .DS. $this->config->get('plugins.snappygrav.wk_path');
+                if( (empty($wk_path)) || (!file_exists($wk_path)) ) $wk_path = __DIR__ .DS. 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386';
 
                 // If the file does not exist displays an alert and exits the procedure
                 if (!file_exists($wk_path)) {
