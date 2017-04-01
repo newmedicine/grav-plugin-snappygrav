@@ -3,6 +3,8 @@
 
 1. [](#bugfix)
     * Added `composer.json` for required libraries [#13](https://github.com/iusvar/grav-plugin-snappygrav/issues/13)
+1. [](#improved)
+    * Updated `README.md`
 
 # v1.3.0
 ## 03/30/2017

@@ -45,15 +45,25 @@ For amd64 replace with wkhtmltopdf-amd64.
 
 # Usage
 
-> IMPORTANT: Version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
+> Warning: for now the `snappygrav` plugin as been tested for two types of sites, with the `Blog Site` skeleton with `Antimatter` theme and `RTFM Site` skeleton with `Learn2` theme.
+
+> Important: version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
 
 The `snappygrav` plugin to include images requires a `true` value for the `Absolute URLs` in the `/your/site/grav/user/config/system.yaml` file. If you are using `Admin` plugin select the following links: `Configuration`, `System`, `Yes` for `Absolute URLs` and save.
 
-The `snappygrav` plugin must be included into your theme. where you want to display the PDF icon, as follows:
+## Single document
+
+The `snappygrav` plugin must be included into your theme, where you want to display the PDF icon, as follows:
 
     {{ snappygrav(page.route) }}
 
-For now I have tested the `snappygrav` plugin for two types of sites, with the Blog Site skeleton with Antimatter theme and RTFM Site skeleton with Learn2 theme.
+## Complete PDF
+
+You can print your all site as a PDF with:
+
+    {{ snappygrav() }}
+
+> Warning: it as been tested for a standard installation, on a 50+ pages grav website.
 
 ## Settings Defaults
 
@@ -63,8 +73,8 @@ You can do this configuration in the plugin's configuration.  Simply copy the `u
 enabled: true           # global enable/disable the entire plugin
 built_in_css: false     # Use built in CSS
 wk_path: ''             # Default 'usr/bin/wkhtmltopdf-i386'
-slug_blog: blog
-preface: false
+slug_blog: blog         # For `Blog Site` skeleton with `Antimatter` theme. It is the folder which contains the posts (default = blog)
+preface: false          # When true print title, author and date on a separate page (default = false)
 grayscale: false        # PDF will be generated in grayscale if true (default = false)
 margin_bottom: 10       # Set the page bottom margin (<unitreal> default 10mm)
 margin_left: 10         # Set the page left margin (<unitreal> default 10mm)
@@ -77,14 +87,6 @@ zoom: 1                 # Use this zoom factor (<float> default 1)
 ```
 
 > Note: The expected values for the Paper Size are really many, to know what you are going to read them directly in the [source file](https://github.com/wkhtmltopdf/wkhtmltopdf/blob/master/src/lib/pdfsettings.cc) from line 174 to line 203.
-
-## Complete PDF
-
-You can print your all site as a PDF with:
-
-    {{ snappygrav() }}
-
-> Warning : it as been tested for a standard installation, on a 50+ pages grav website.
 
 # Customizing the Settings
 
