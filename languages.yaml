@@ -119,6 +119,9 @@ cs:
 
     SLUG_BLOG: Složka blogu
     SLUG_BLOG_HELP: Název složky bez lomítka (před či za) pro stránky blogu
+    
+    PREFACE: Úvod
+    PREFACE_HELP: Vytisknout stránku s názvem, autorem a datem vzniku.
 
     MONOCHROME_PRINTOUT: Vytisknout monochromaticky
     MONOCHROME_PRINTOUT_HELP: PDF bude vytištěno v odstínech šedé
