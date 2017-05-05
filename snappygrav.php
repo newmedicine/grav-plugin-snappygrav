@@ -146,6 +146,13 @@ class SnappyGravPlugin extends Plugin
                     echo '<script type="text/javascript">alert("'.$message.'");</script>';
                     break;
                 }
+
+                // Check if wkhtmltopdf-i386 is executable
+                $perms = fileperms( $wk_path );
+                if($perms!=33261){
+                    @chmod($wk_path, 0755); //33261
+                }
+        
                 $snappy = new Pdf($wk_path);
 
                 // It takes some parameters from snappygrav.yaml file

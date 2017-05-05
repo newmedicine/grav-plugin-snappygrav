@@ -1,3 +1,9 @@
+# v1.3.2
+## 05/05/2017
+
+1. [](#bugfix)
+    * Check if wkhtmltopdf-i386 is executable
+
 # v1.3.1-rc.1
 ## 04/02/2017
 
