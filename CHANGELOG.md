@@ -1,8 +1,11 @@
-# v1.3.2
+# v1.4.0
 ## 05/05/2017
 
 1. [](#bugfix)
     * Check if wkhtmltopdf-i386 is executable
+    * Better later than ever: removed the instance that builds the `snappy` object from the `foreach` cycle 
+1. [](#improved)
+    * Added breadcrumbs [#16](https://github.com/iusvar/grav-plugin-snappygrav/issues/16)
 
 # v1.3.1-rc.1
 ## 04/02/2017

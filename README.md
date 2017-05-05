@@ -70,20 +70,27 @@ You can print your all site as a PDF with:
 You can do this configuration in the plugin's configuration.  Simply copy the `user/plugins/snappygrav/snappygrav.yaml` into `user/config/plugins/snappygrav.yaml` and make your modifications.
 
 ```
-enabled: true           # global enable/disable the entire plugin
-built_in_css: false     # Use built in CSS
-wk_path: ''             # Default 'usr/bin/wkhtmltopdf-i386'
-slug_blog: blog         # For `Blog Site` skeleton with `Antimatter` theme. It is the folder which contains the posts (default = blog)
-preface: false          # When true print title, author and date on a separate page (default = false)
-grayscale: false        # PDF will be generated in grayscale if true (default = false)
-margin_bottom: 10       # Set the page bottom margin (<unitreal> default 10mm)
-margin_left: 10         # Set the page left margin (<unitreal> default 10mm)
-margin_right: 10        # Set the page right margin (<unitreal> default 10mm)
-margin_top: 10          # Set the page top margin (<unitreal> default 10mm)
-orientation: Portrait   # Set orientation to Landscape or Portrait
-page_size: A4           # Set paper <size> to: A4, Letter, etc.
-title: true             # I prefer True or False, getting title from site page
-zoom: 1                 # Use this zoom factor (<float> default 1)
+enabled: true               # global enable/disable the entire plugin
+built_in_css: false         # Use built in CSS
+slug_blog: blog             # For `Blog Site` skeleton with `Antimatter` theme. It is the folder which contains the posts (default = blog)
+preface_title: false        # When true print title (default = false)
+preface_author: false       # When true print author (default = false)
+preface_date: false         # When true print date (default = false)
+breadcrumbs: true           # When true print breadcrumbs (default = true)
+breadcrumbs_link: true      # When true print link to the online document (default = true)
+breadcrumbs_current: true   # When true print also the current entry (default = true)
+wk_path: ''                 # Default 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386'
+slug_blog: blog             # For `Blog Site` skeleton with `Antimatter` theme. It is the folder which contains the posts (default = blog)
+preface: false              # When true print title, author and date on a separate page (default = false)
+grayscale: false            # PDF will be generated in grayscale if true (default = false)
+margin_bottom: 10           # Set the page bottom margin (<unitreal> default 10mm)
+margin_left: 10             # Set the page left margin (<unitreal> default 10mm)
+margin_right: 10            # Set the page right margin (<unitreal> default 10mm)
+margin_top: 10              # Set the page top margin (<unitreal> default 10mm)
+orientation: Portrait       # Set orientation to Landscape or Portrait
+page_size: A4               # Set paper <size> to: A4, Letter, etc.
+title: true                 # I prefer True or False, getting title from site page
+zoom: 1                     # Use this zoom factor (<float> default 1)
 ```
 
 > Note: The expected values for the Paper Size are really many, to know what you are going to read them directly in the [source file](https://github.com/wkhtmltopdf/wkhtmltopdf/blob/master/src/lib/pdfsettings.cc) from line 174 to line 203.

@@ -1,16 +1,51 @@
 {% extends 'partials/snappygrav-base.html.twig' %}
+
+{% set bread = config.plugins.snappygrav.breadcrumbs %}
+{% set link = config.plugins.snappygrav.breadcrumbs_link %}
+{% set current = config.plugins.snappygrav.breadcrumbs_current %}
+
+{% set p_title = config.plugins.snappygrav.preface_title %}
+{% set p_author = config.plugins.snappygrav.preface_author %}
+{% set p_date = config.plugins.snappygrav.preface_date %}
+
+{% set count = snappygrav.breadcrumbs|length %}
+{% set start = 0 %}
+{% set end = count %}
+{% if not current %}
+    {% set end = count -1 %}
+{% endif %}
+
 {% block content %}
-    {% if config.plugins.snappygrav.preface %}
-        <h2>
-            <center>{{ snappygrav.page_title }}</center>
-        </h2>
-        <center>
-            <b>{{ snappygrav.page_header_author }}</b>
-        </center>
-        <br/>
-        <center>
-            <b>{{ snappygrav.page_date }}</b>
-        </center>
+
+    {% if bread %}
+
+        <p class="crumbs_snappy">
+        
+            {% for crumb in snappygrav.breadcrumbs|slice( start, end ) %}
+            
+                {% if link %}
+                    <a href="{{base_url_absolute}}{{ crumb.route }}">
+                {% endif %}
+                
+                {{ crumb.title }}
+                
+                {% if link %}
+                    </a>
+                {% endif %}
+                
+                {% if not loop.last %}
+                    &nbsp;&gt;&nbsp;
+                {% endif %}
+                
+            {% endfor %}
+        </p>
+        
     {% endif %}
+
+    {% if p_title %}<h2><center>{{ snappygrav.page_title }}</center></h2>{% endif %}
+    {% if p_author %}<center><b>{{ snappygrav.page_header_author }}</b></center>{% endif %}
+    {% if p_date %}<center><b>{{ snappygrav.page_date }}</b></center>{% endif %}
+
     {{ snappygrav.page_content }}
+
 {% endblock %}

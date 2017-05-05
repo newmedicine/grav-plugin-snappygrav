@@ -127,63 +127,27 @@ class SnappyGravPlugin extends Plugin
 
             if($slug == $target || $option == "completepdf"){
                 //Page variables
-                $content['page_title'] = $page_title = $page->title();
+                // get title
+                $content['page_title'] = $page->title();
+
+                //get date
                 $page_serial = $page->date();
-                $content['page_date'] = $page_date = date("d-m-Y",$page_serial);
-                $page_header_author = "";
-                if(isset( $page->header()->author )) $page_header_author = $page->header()->author;
-                $content['page_header_author'] = $page_header_author;
-                $content['page_content'] = $page_content = $page->content();
-                $content['page_slug'] = $page_slug = $page->slug();
+                $content['page_date'] = date("d-m-Y",$page_serial);
 
-                //PDF
-                $wk_path = __DIR__ .DS. $this->config->get('plugins.snappygrav.wk_path');
-                if( (empty($wk_path)) || (!file_exists($wk_path)) ) $wk_path = __DIR__ .DS. 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386';
-
-                // If the file does not exist displays an alert and exits the procedure
-                if (!file_exists($wk_path)) {
-                    $message = 'The file\n '.$wk_path.'\n does not exist!';
-                    echo '<script type="text/javascript">alert("'.$message.'");</script>';
-                    break;
+                //get author
+                $content['page_header_author'] = '';
+                if( isset( $page->header()->author ) ) {
+                    $content['page_header_author'] = $page->header()->author;
                 }
 
-                // Check if wkhtmltopdf-i386 is executable
-                $perms = fileperms( $wk_path );
-                if($perms!=33261){
-                    @chmod($wk_path, 0755); //33261
-                }
-        
-                $snappy = new Pdf($wk_path);
+                //get content
+                $content['page_content'] = $page->content();
 
-                // It takes some parameters from snappygrav.yaml file
-                $grayscale = $this->config->get('plugins.snappygrav.grayscale');
-                if($grayscale) $snappy->setOption('grayscale', $grayscale);
+                //get slug
+                $content['page_slug'] = $page->slug();
 
-                $margin_bottom = $this->config->get('plugins.snappygrav.margin_bottom');
-                if($margin_bottom) $snappy->setOption('margin-bottom', $margin_bottom);
-
-                $margin_left = $this->config->get('plugins.snappygrav.margin_left');
-                if($margin_left) $snappy->setOption('margin-left', $margin_left);
-
-                $margin_right = $this->config->get('plugins.snappygrav.margin_right');
-                if($margin_right) $snappy->setOption('margin-right', $margin_right);
-
-                $margin_top = $this->config->get('plugins.snappygrav.margin_top');
-                if($margin_top) $snappy->setOption('margin-top', $margin_top);
-
-                $orientation = $this->config->get('plugins.snappygrav.orientation');
-                if($orientation == "Portrait" || $orientation == "Landscape") {
-                    $snappy->setOption('orientation', $orientation);
-                }
-
-                $page_size = $this->config->get('plugins.snappygrav.page_size');
-                if($page_size) $snappy->setOption('page-size', $page_size);
-
-                $hastitle = $this->config->get('plugins.snappygrav.title');
-                if($hastitle) $snappy->setOption('title', $page_title);
-
-                $zoom = $this->config->get('plugins.snappygrav.zoom');
-                if($zoom) $snappy->setOption('zoom', $zoom);
+                //get breadcrumbs
+                $content['breadcrumbs'] = $this->get_crumbs( $page );
 
                 /** @var Twig $twig */
                 $twig = $this->grav['twig'];
@@ -194,6 +158,8 @@ class SnappyGravPlugin extends Plugin
             }
         }
 
+        $snappy = $this->set_snappy( $content );
+
         $filename = $option == "completepdf" ? parse_url($uri->base())['host'] : $page_slug;
         //Saves ie https problems
         header("Cache-Control: public");
@@ -203,6 +169,102 @@ class SnappyGravPlugin extends Plugin
         header('Content-Disposition: attachment; filename="'. $filename .'.pdf"');
 
         echo ($snappy->getOutputFromHtml($html));
+    }
+
+
+    public function get_crumbs( $page )
+    {
+        $current = $page;
+        $hierarchy = array();
+        while ($current && !$current->root()) {
+            $hierarchy[$current->url()] = $current;
+            $current = $current->parent();
+        }
+        $home = $this->grav['pages']->dispatch('/');
+        if ($home && !array_key_exists($home->url(), $hierarchy)) {
+            $hierarchy[] = $home;
+        }
+        $elements = array_reverse($hierarchy);
+        $crumbs = array();
+        foreach ($elements as $key => $crumb) {
+            $crumbs[] = [ 'route' => $crumb->route(), 'title' => $crumb->title() ];
+        }
+
+        return $crumbs;
+    }
+
+
+    /*
+     * ottiene percorso del programma wkhtmltopdf
+     * lo rende eseguibile se già non lo è
+     * crea una nuova istanza
+     * carica la configurazione da snappygrav.yaml
+     * restituisce istanza
+     */
+    public function set_snappy( $content )
+    {
+        $matter = $content;
+        // path del programma wkhtmltopdf
+        $wk_path = __DIR__ .DS. $this->config->get('plugins.snappygrav.wk_path');
+        if( (empty($wk_path)) || (!file_exists($wk_path)) ) $wk_path = __DIR__ .DS. 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386';
+
+        // If the file does not exist displays an alert and exits the procedure
+        if (!file_exists($wk_path)) {
+            $message = 'The file\n '.$wk_path.'\n does not exist!';
+            echo '<script type="text/javascript">alert("'.$message.'");</script>';
+            break;
+        }
+
+        // Check if wkhtmltopdf-i386 is executable
+        $perms = fileperms( $wk_path );
+        if($perms!=33261){
+            @chmod($wk_path, 0755); //33261
+        }
+
+        $snappy = new Pdf($wk_path);
+        //$snappy = new \Knp\Snappy\Pdf($wk_path);
+
+        // It takes some parameters from snappygrav.yaml file
+
+        //$snappy->setOption('default-header', true);
+        //$snappy->setOption('header-left',$matter['page_title']);
+        //$snappy->setOption('header-right','[page]/[toPage]');
+        //$snappy->setOption('header-spacing',5);
+        //$snappy->setOption('header-line',true);
+         
+        $grayscale = $this->config->get('plugins.snappygrav.grayscale');
+        if($grayscale) $snappy->setOption('grayscale', $grayscale);
+
+        $margin_bottom = $this->config->get('plugins.snappygrav.margin_bottom');
+        if($margin_bottom) $snappy->setOption('margin-bottom', $margin_bottom);
+
+        $margin_left = $this->config->get('plugins.snappygrav.margin_left');
+        if($margin_left) $snappy->setOption('margin-left', $margin_left);
+
+        $margin_right = $this->config->get('plugins.snappygrav.margin_right');
+        if($margin_right) $snappy->setOption('margin-right', $margin_right);
+
+        $margin_top = $this->config->get('plugins.snappygrav.margin_top');
+        if($margin_top) $snappy->setOption('margin-top', $margin_top);
+
+        $orientation = $this->config->get('plugins.snappygrav.orientation');
+        if($orientation == "Portrait" || $orientation == "Landscape") {
+            $snappy->setOption('orientation', $orientation);
+        }
+
+        $page_size = $this->config->get('plugins.snappygrav.page_size');
+        if($page_size) $snappy->setOption('page-size', $page_size);
+
+        $hastitle = $this->config->get('plugins.snappygrav.title');
+        if($hastitle) $snappy->setOption('title', $matter['page_title']);
+
+        $toc = $this->config->get('plugins.snappygrav.toc');
+        if($toc) $snappy->setOption('toc', true);
+        
+        $zoom = $this->config->get('plugins.snappygrav.zoom');
+        if($zoom) $snappy->setOption('zoom', $zoom);
+
+        return $snappy;
     }
 
     /**
