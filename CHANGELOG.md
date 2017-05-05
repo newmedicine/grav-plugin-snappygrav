@@ -1,3 +1,9 @@
+# v1.4.1
+## 05/05/2017
+
+1. [](#bugfix)
+    * Updated blueprints and languages
+
 # v1.4.0
 ## 05/05/2017
 

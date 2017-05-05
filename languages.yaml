@@ -13,8 +13,23 @@ en:
     SLUG_BLOG: Folder blog
     SLUG_BLOG_HELP: Name of the blog folder without slash (either before or after)
 
-    PREFACE: Preface
-    PREFACE_HELP: Print a page with the title, author and date.
+    PREFACE_TITLE: Preface Title
+    PREFACE_TITLE_HELP: Print the title
+
+    PREFACE_AUTHOR: Preface Author
+    PREFACE_AUTHOR_HELP: Print the author
+
+    PREFACE_DATE: Preface Date
+    PREFACE_DATE_HELP: Print the date
+
+    BREADCRUMBS: Breadcrumbs
+    BREADCRUMBS_HELP: Print breadcrumbs at the top of the document
+
+    BREADCRUMBS_LINK: Breadcrumbs Link
+    BREADCRUMBS_LINK_HELP: Prints the link to the corresponding online page
+
+    BREADCRUMBS_CURRENT: Breadcrumbs current
+    BREADCRUMBS_CURRENT_HELP: Also prints the current page breadcrumbs
 
     MONOCHROME_PRINTOUT: Monochrome printout
     MONOCHROME_PRINTOUT_HELP: PDF will be generated in grayscale if true
@@ -66,8 +81,23 @@ it:
     SLUG_BLOG: Cartella blog
     SLUG_BLOG_HELP: Nome della cartella blog senza barra (né prima né dopo)
 
-    PREFACE: Prefazione
-    PREFACE_HELP: Stampa una pagina contenente titolo, autore e data.
+    PREFACE_TITLE: Titolo
+    PREFACE_TITLE_HELP: Stampa il titolo
+
+    PREFACE_AUTHOR: Author
+    PREFACE_AUTHOR_HELP: Stampa l'autore
+
+    PREFACE_DATE: Date
+    PREFACE_DATE_HELP: Stampa la data
+
+    BREADCRUMBS: Breadcrumbs
+    BREADCRUMBS_HELP: Stampa il percorso in testa al documento
+
+    BREADCRUMBS_LINK: Collegamento breadcrumbs
+    BREADCRUMBS_LINK_HELP: Stampa il collegamento alla corrispondente pagina online
+
+    BREADCRUMBS_CURRENT: Attuale breadcrumbs
+    BREADCRUMBS_CURRENT_HELP: Stampa anche la posizione corrente
 
     MONOCHROME_PRINTOUT: Stampa in bianco e nero
     MONOCHROME_PRINTOUT_HELP: PDF verrà generato in scala di grigi se è vero

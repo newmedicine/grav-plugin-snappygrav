@@ -1,5 +1,5 @@
 name: SnappyGrav
-version: 1.4.0
+version: 1.4.1
 description: Save a page or all website in PDF format
 icon: file-pdf-o
 author:
@@ -58,9 +58,70 @@ form:
       validate:
         type: string
 
-    preface:
+    preface_title:
       type: toggle
-      label: SNAPPYGRAV_PLUGIN.PREFACE
+      label: SNAPPYGRAV_PLUGIN.PREFACE_TITLE
+      help: SNAPPYGRAV_PLUGIN.PREFACE_TITLE_HELP
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    preface_author:
+      type: toggle
+      label: SNAPPYGRAV_PLUGIN.PREFACE_AUTHOR
+      help: SNAPPYGRAV_PLUGIN.PREFACE_AUTHOR_HELP
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    preface_date:
+      type: toggle
+      label: SNAPPYGRAV_PLUGIN.PREFACE_DATE
+      help: SNAPPYGRAV_PLUGIN.PREFACE_DATE_HELP
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    breadcrumbs:
+      type: toggle
+      label: SNAPPYGRAV_PLUGIN.BREADCRUMBS
+      help: SNAPPYGRAV_PLUGIN.BREADCRUMBS_HELP
+      highlight: 1
+      default: 1
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    breadcrumbs_link:
+      type: toggle
+      label: SNAPPYGRAV_PLUGIN.BREADCRUMBS_LINK
+      help: SNAPPYGRAV_PLUGIN.BREADCRUMBS_LINK_HELP
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
+
+    breadcrumbs_current:
+      type: toggle
+      label: SNAPPYGRAV_PLUGIN.BREADCRUMBS_CURRENT
+      help: SNAPPYGRAV_PLUGIN.BREADCRUMBS_CURRENT_HELP
       highlight: 1
       default: 0
       options:
