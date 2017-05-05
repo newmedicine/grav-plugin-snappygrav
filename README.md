@@ -31,6 +31,8 @@ In order to use the `snappygrav` plugin you will have to install:
 * [KnpLabs Snappy](https://github.com/KnpLabs/snappy), the PHP5 library allowing thumbnail, snapshot or PDF generation from a url or a html page. The library Snappy is a product of [Matthieu Bontemps](https://github.com/mbontemps) of [KNP Labs](http://KNPLabs.ch), released under the MIT License.
 * [Wkhtmltopdf](http://wkhtmltopdf.org/), the open source (LGPLv3) command line tools to render HTML into PDF (minimum version required 0.12.x). The Wkhtmltopdf project maintained by [Ashish Kulkarni](https://github.com/ashkulz), originally created by [Jakob Truelsen](https://github.com/antialize), released under open source License (LGPLv3)
 
+>> From version v1.3.1-rc.1 these libraries are already provided in the vendor folder (knplabs/knp-snappy and h4cc/wkhtmltopdf-i386). However it is useful to know that ...
+
 The simplest way to install these libraries is via [Composer](http://getcomposer.org/). Regarding Snappy from the root of your Grav install type:
 
     $ composer require knplabs/knp-snappy
