@@ -116,10 +116,10 @@ class SnappyGravPlugin extends Plugin
         $option = reset($uri_params);
         $slug = key($uri_params);
         $html = [];
+        $content = [];
 
         foreach ($collection as $page) {
 
-            $content = [];
             $page_route = $page->route();
             $pieces = explode("/", $page_route);
             $len = count($pieces);
@@ -160,7 +160,7 @@ class SnappyGravPlugin extends Plugin
 
         $snappy = $this->set_snappy( $content );
 
-        $filename = $option == "completepdf" ? parse_url($uri->base())['host'] : $page_slug;
+        $filename = ( $option == "completepdf" ? parse_url($uri->base())['host'] : $content['page_slug'] );
         //Saves ie https problems
         header("Cache-Control: public");
         header("Content-Type: application/pdf");
