@@ -1,9 +1,10 @@
 # v1.4.2
-## xx/xx/2017
+## 23/05/2017
 
 1. [](#bugfix)
     * Replaced break with exit
     * Improved the README
+    * Uploading dependencies automatically delayed
 
 # v1.4.1
 ## 05/05/2017
