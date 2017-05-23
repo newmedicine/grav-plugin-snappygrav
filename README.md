@@ -33,7 +33,7 @@ In order to use the `snappygrav` plugin you will have to install:
 
 > From version v1.3.1-rc.1 these libraries are already provided in the vendor folder (knplabs/knp-snappy and h4cc/wkhtmltopdf-i386). However it is useful to know that ...
 
-The simplest way to install these libraries is via [Composer](http://getcomposer.org/). Regarding Snappy from the root of your Grav install type:
+The simplest way to install these libraries is via [Composer](http://getcomposer.org/). Regarding Snappy, place yourself in the Snappygrav plugin folder and type:
 
     $ composer require knplabs/knp-snappy
 
