@@ -12,10 +12,6 @@ bugs: https://github.com/iusvar/grav-plugin-snappygrav/issues
 readme: https://github.com/iusvar/grav-plugin-snappygrav/blob/master/README.md
 license: MIT
 
-dependencies:
-  - github: https://github.com/KnpLabs/snappy.git
-  - github: https://github.com/h4cc/wkhtmltopdf-i386.git
-
 form:
   validation: strict
   fields:
