@@ -195,16 +195,16 @@ class SnappyGravPlugin extends Plugin
 
 
     /*
-     * ottiene percorso del programma wkhtmltopdf
-     * lo rende eseguibile se già non lo è
-     * crea una nuova istanza
-     * carica la configurazione da snappygrav.yaml
-     * restituisce istanza
+     * It gets the path of the wkhtmltopdf program
+     * Makes it executable if it is not already
+     * Create a new instance
+     * Load configuration from snappygrav.yaml
+     * Returns an instance
      */
     public function set_snappy( $content )
     {
         $matter = $content;
-        // path del programma wkhtmltopdf
+        // Path of the wkhtmltopdf program
         $wk_path = __DIR__ .DS. $this->config->get('plugins.snappygrav.wk_path');
         if( (empty($wk_path)) || (!file_exists($wk_path)) ) $wk_path = __DIR__ .DS. 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386';
 
@@ -212,7 +212,7 @@ class SnappyGravPlugin extends Plugin
         if (!file_exists($wk_path)) {
             $message = 'The file\n '.$wk_path.'\n does not exist!';
             echo '<script type="text/javascript">alert("'.$message.'");</script>';
-            break;
+            exit;
         }
 
         // Check if wkhtmltopdf-i386 is executable
