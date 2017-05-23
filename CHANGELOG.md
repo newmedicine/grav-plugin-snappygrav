@@ -1,3 +1,10 @@
+# v1.4.2
+## xx/xx/2017
+
+1. [](#bugfix)
+    * Replaced break with exit
+    * Improved the README
+
 # v1.4.1
 ## 05/05/2017
 
