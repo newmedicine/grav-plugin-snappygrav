@@ -2,21 +2,40 @@
 namespace Grav\Plugin;
 
 use Grav\Common\Plugin;
-use RocketTheme\Toolbox\Event\Event;
+use Grav\Common\Utils;
+use Grav\Plugin\SnappyManager\SnappyManager;
 
-use Grav\Common\Page\Page;
-use Grav\Common\Page\Collection;
-use Grav\Common\Uri;
-use Grav\Common\Taxonomy;
-
-use Knp\Snappy\Pdf;
 
 class SnappyGravPlugin extends Plugin
 {
+    protected $lang;
+    
+    protected $route = "snappy-manager";
+    protected $uri;
+    protected $base;
+    protected $admin_route;
+    protected $snappymanager;
+    protected $taskcontroller;
+    protected $json_response = [];
+
+    protected $listing = array();
+
+
     public static function getSubscribedEvents() {
         return [
-            'onPluginsInitialized' => ['onPluginsInitialized', 0],
+            'onPluginsInitialized' => [['setting', 1000],['onPluginsInitialized', 0]],
         ];
+    }
+
+    public function setting()
+    {
+        //ini_set('xdebug.max_nesting_level', 512);
+        //set_time_limit(60);
+        
+        require_once __DIR__ . '/classes/snappymanager.php';
+        
+        $this->lang = $this->grav['language'];
+        $this->uri = $this->grav['uri'];
     }
 
     /**
@@ -25,7 +44,6 @@ class SnappyGravPlugin extends Plugin
     public function onPluginsInitialized()
     {
         if ($this->isAdmin()) {
-            $this->active = false;
             return;
         }
 
@@ -33,247 +51,18 @@ class SnappyGravPlugin extends Plugin
 
         $this->enable([
             'onTwigInitialized'     => ['onTwigInitialized', 0],
+            'onPageInitialized'     => ['onPageInitialized', 1001],
+            'onTwigSiteVariables'   => ['onTwigSiteVariables', 0],
+            'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0]
         ]);
-            
-        /** @var Uri $uri */
-        $uri = $this->grav['uri'];
-        $params = $uri->params(null, true);
 
-        //Get pdf or completepdf
-        if ((count($params) > 0) && (reset($params) == "pdf" || reset($params) == "completepdf")){
-            $this->enable([
-                'onCollectionProcessed' => ['onCollectionProcessed', 0],
-                //Twig
-                'onTwigSiteVariables' => ['onTwigSiteVariables', 0],
-                'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
-            ]);
-        }
-    }
-
-    /**
-     * Add simple `thumbs()` Twig function
-     */
-    public function onTwigInitialized() {
-        $this->grav['twig']->twig()->addFunction(
-            new \Twig_SimpleFunction('snappygrav', [$this, 'generateLink'])
-        );
-    }
-
-    public function generateLink($id=null, $options = [])
-    {
-        $param_sep = $this->grav['config']->get('system.param_sep', ':');
-
-        $slug_blog = 'blog';
-        $slug_blog = $this->config->get('plugins.snappygrav.slug_blog');
-
-        $uri = $this->grav['uri'];
-        $basename = $uri->basename();
-        $current_theme = $this->grav['themes']->current();
-
-        $language = $this->grav['language'];
-        $single = $language->translate(['SNAPPYGRAV_PLUGIN.GET_PDF']);
-        $full = $language->translate(['SNAPPYGRAV_PLUGIN.GET_FULL_PDF']);
-        
-        $html = '<a href="'.$this->grav['base_url'] . $id . $param_sep . 'pdf" title="'.$single.'"><i class="fa fa-file-pdf-o"></i></a>';
-        if ($id === null) {
-            $html = '<a href="'.$this->grav['base_url'] . DS . $param_sep . 'completepdf" title="'.$full.'"><i class="fa fa-file-pdf-o"></i></a>';
-        } else {
-            if ( ($current_theme == 'learn2') && ( empty($basename) ) ) {
-                $html = '<a href="'.$this->grav['base_url'] . $id . $param_sep . 'pdf" title="'.$single.'"><i class="fa fa-file-pdf-o"></i></a>';
-            }
-            if ( $current_theme == 'antimatter' ) {
-                $html = '<a href="'.$this->grav['base_url'] . DS . $slug_blog . DS . $id . $param_sep . 'pdf" title="'.$single.'"><i class="fa fa-file-pdf-o"></i></a>';
-            }
+        if (empty($this->template)) {
+            $this->template = 'snappy-manager';
         }
 
-        return $html;
-    }
-
-    /**
-     * Create pagination object for the page.
-     *
-     * @param Event $event
-     */
-    public function onCollectionProcessed(Event $event)
-    {
-        /** @var Collection $collection */
-        $collection = $event['collection'];
-        foreach ($collection as $slug => $page) {
-            $header = $page->header();
-            if (isset($header->feed) && !empty($header->feed['skip'])) {
-                $collection->remove($page);
-            }
-        }
-
-        $uri = $this->grav['uri'];
-        $uri_params = $uri->params(null, true);
-
-        //Exit if we get there with empty array (eg no :pdf / :completepdf params)
-        if (count($uri_params) == 0) {
-            return;
-        }
-
-        $option = reset($uri_params);
-        $slug = key($uri_params);
-        $html = [];
-        $content = [];
-
-        foreach ($collection as $page) {
-
-            $page_route = $page->route();
-            $pieces = explode("/", $page_route);
-            $len = count($pieces);
-            $target = $pieces[$len-1];
-
-            if($slug == $target || $option == "completepdf"){
-                //Page variables
-                // get title
-                $content['page_title'] = $page->title();
-
-                //get date
-                $page_serial = $page->date();
-                $content['page_date'] = date("d-m-Y",$page_serial);
-
-                //get author
-                $content['page_header_author'] = '';
-                if( isset( $page->header()->author ) ) {
-                    $content['page_header_author'] = $page->header()->author;
-                }
-
-                //get content
-                $content['page_content'] = $page->content();
-
-                //get slug
-                $content['page_slug'] = $page->slug();
-
-                //get breadcrumbs
-                $content['breadcrumbs'] = $this->get_crumbs( $page );
-
-                /** @var Twig $twig */
-                $twig = $this->grav['twig'];
-                $this->grav['twig']->twig_vars['snappygrav'] = $content;
-                $template = "snappygrav.html.twig";
-
-                $html[] = $twig->processTemplate($template);
-            }
-        }
-
-        $snappy = $this->set_snappy( $content );
-
-        $filename = ( $option == "completepdf" ? parse_url($uri->base())['host'] : $content['page_slug'] );
-        //Saves ie https problems
-        header("Cache-Control: public");
-        header("Content-Type: application/pdf");
-        header('Pragma: private');
-        header('Expires: 0');
-        header('Content-Disposition: attachment; filename="'. $filename .'.pdf"');
-
-        echo ($snappy->getOutputFromHtml($html));
-    }
-
-
-    public function get_crumbs( $page )
-    {
-        $current = $page;
-        $hierarchy = array();
-        while ($current && !$current->root()) {
-            $hierarchy[$current->url()] = $current;
-            $current = $current->parent();
-        }
-        $home = $this->grav['pages']->dispatch('/');
-        if ($home && !array_key_exists($home->url(), $hierarchy)) {
-            $hierarchy[] = $home;
-        }
-        $elements = array_reverse($hierarchy);
-        $crumbs = array();
-        foreach ($elements as $key => $crumb) {
-            $crumbs[] = [ 'route' => $crumb->route(), 'title' => $crumb->title() ];
-        }
-
-        return $crumbs;
-    }
-
-
-    /*
-     * It gets the path of the wkhtmltopdf program
-     * Makes it executable if it is not already
-     * Create a new instance
-     * Load configuration from snappygrav.yaml
-     * Returns an instance
-     */
-    public function set_snappy( $content )
-    {
-        $matter = $content;
-        // Path of the wkhtmltopdf program
-        $wk_path = __DIR__ .DS. $this->config->get('plugins.snappygrav.wk_path');
-        if( (empty($wk_path)) || (!file_exists($wk_path)) ) $wk_path = __DIR__ .DS. 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386';
-
-        // If the file does not exist displays an alert and exits the procedure
-        if (!file_exists($wk_path)) {
-            $message = 'The file\n '.$wk_path.'\n does not exist!';
-            echo '<script type="text/javascript">alert("'.$message.'");</script>';
-            exit;
-        }
-
-        // Check if wkhtmltopdf-i386 is executable
-        $perms = fileperms( $wk_path );
-        if($perms!=33261){
-            @chmod($wk_path, 0755); //33261
-        }
-
-        $snappy = new Pdf($wk_path);
-        //$snappy = new \Knp\Snappy\Pdf($wk_path);
-
-        // It takes some parameters from snappygrav.yaml file
-
-        //$snappy->setOption('default-header', true);
-        //$snappy->setOption('header-left',$matter['page_title']);
-        //$snappy->setOption('header-right','[page]/[toPage]');
-        //$snappy->setOption('header-spacing',5);
-        //$snappy->setOption('header-line',true);
-         
-        $grayscale = $this->config->get('plugins.snappygrav.grayscale');
-        if($grayscale) $snappy->setOption('grayscale', $grayscale);
-
-        $margin_bottom = $this->config->get('plugins.snappygrav.margin_bottom');
-        if($margin_bottom) $snappy->setOption('margin-bottom', $margin_bottom);
-
-        $margin_left = $this->config->get('plugins.snappygrav.margin_left');
-        if($margin_left) $snappy->setOption('margin-left', $margin_left);
-
-        $margin_right = $this->config->get('plugins.snappygrav.margin_right');
-        if($margin_right) $snappy->setOption('margin-right', $margin_right);
-
-        $margin_top = $this->config->get('plugins.snappygrav.margin_top');
-        if($margin_top) $snappy->setOption('margin-top', $margin_top);
-
-        $orientation = $this->config->get('plugins.snappygrav.orientation');
-        if($orientation == "Portrait" || $orientation == "Landscape") {
-            $snappy->setOption('orientation', $orientation);
-        }
-
-        $page_size = $this->config->get('plugins.snappygrav.page_size');
-        if($page_size) $snappy->setOption('page-size', $page_size);
-
-        $hastitle = $this->config->get('plugins.snappygrav.title');
-        if($hastitle) $snappy->setOption('title', $matter['page_title']);
-
-        $toc = $this->config->get('plugins.snappygrav.toc');
-        if($toc) $snappy->setOption('toc', true);
-        
-        $zoom = $this->config->get('plugins.snappygrav.zoom');
-        if($zoom) $snappy->setOption('zoom', $zoom);
-
-        return $snappy;
-    }
-
-    /**
-     * Handles template and specific CSS for PDF template
-     */
-    public function onTwigSiteVariables() {
-        if ($this->config->get('plugins.snappygrav.built_in_css')) {
-            $this->grav['assets']->add('plugin://snappygrav/assets/css/snappygrav.css');
-        }
+        $this->snappymanager = new SnappyManager($this->grav, $this->admin_route, $this->template, $this->route);
+        $this->snappymanager->json_response = [];
+        $this->grav['snappymanager'] = $this->snappymanager;
     }
 
     /**
@@ -281,6 +70,300 @@ class SnappyGravPlugin extends Plugin
      */
     public function onTwigTemplatePaths()
     {
-      $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
+        $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
     }
+
+
+    public function onPageInitialized()
+    {
+        $post = !empty($_POST) ? $_POST : [];
+
+        $task = !empty($post['snappytask']) ? $post['snappytask'] : $this->uri->param('snappytask');
+
+        if ($task) {
+            $home = '/' . trim($this->config->get('system.home.alias'), '/');
+            $pages = $this->grav['pages'];
+            $this->grav['snappymanager']->routes = $pages->routes();
+
+            if (isset($this->grav['snappymanager']->routes['/'])) {
+                unset($this->grav['snappymanager']->routes['/']);
+            }
+            $page = $pages->dispatch('/', true);
+
+            if ($page) {
+                $page->route($home);
+            }
+
+            $this->snappymanager->execute($task, $post);
+            if ( $this->snappymanager->json_response ) {
+                echo json_encode($this->snappymanager->json_response);
+                exit();
+            }
+        } else {
+        }
+    }
+
+
+    public function onTwigInitialized()
+    {
+        $this->grav['twig']->twig()->addFunction(
+            new \Twig_SimpleFunction('snappygrav', [$this, 'generateLink'])
+        );
+
+        $this->grav['twig']->twig()->addFilter(
+            new \Twig_SimpleFilter('snappy_implode', 'implode')
+        );
+    }
+
+    /**
+     * Handles template and specific CSS for PDF template
+     */
+    public function onTwigSiteVariables()
+    {
+        $this->grav['assets']->add('plugin://snappygrav/assets/snappygrav/snappygrav.css');
+        $this->grav['assets']->add('plugin://snappygrav/assets/jquery-confirm-v3/css/jquery-confirm.css');
+        $this->grav['assets']->add('plugin://snappygrav/assets/jquery-confirm-v3/js/jquery-confirm.js');
+    }
+
+
+    public function generateLink($slug = null, $id = null, $options = []) //$id is $page->slug, before this version was $page->route
+    {
+        //complete
+        $export_single = false;
+        $leaf = "";
+        $cid = "";
+
+        $button_id = "complete";
+
+        //single or branch
+        if(!empty($slug)){
+            $export_single = true;
+            $leaf = "leaf:" . $slug . DS;
+            $cid = "id:" . $id . DS;
+
+            $button_id = "leaf-".$id;
+        }
+
+        $nonce = Utils::getNonce('snappy-form');
+
+        $branch = $this->config->get('plugins.snappygrav.branch');
+        $base_url_relative = $this->grav['base_url_relative'] . DS;
+
+        $default_type = $this->config->get('plugins.snappygrav.default_type');
+
+        $theme = $this->config->get('plugins.snappygrav.theme');
+
+        $type = 'type:' . $default_type . DS;
+        $branch_value = 'branch:'.($branch ? 'yes' : 'no') . DS;
+        $branch_button_text = $this->lang->translate('PLUGIN_SNAPPYGRAV.COLLECT_BRANCH');
+
+        $checked = ($branch ? 'checked' : '');
+
+        $snappy_manager  = 'snappy-manager.json' . DS;
+        $snappy_task     = 'snappytask:snappy' . DS;
+        $snappy_nonce    = 'snappy-nonce:'.$nonce;
+        $button_data    = $base_url_relative . $snappy_manager . $snappy_task . $branch_value . $leaf . $type . $cid . $snappy_nonce;
+
+        $button_title   = $this->lang->translate('PLUGIN_SNAPPYGRAV.COMPLETE_EXPORT');
+        $type_label     = $this->lang->translate('PLUGIN_SNAPPYGRAV.DOCUMENT_TYPE');
+        $option_label   = $this->lang->translate('PLUGIN_SNAPPYGRAV.OPTIONS');
+
+        $azw3_is_checked    = ($default_type == 'azw3' ? 'checked' : '');
+        $epub_is_checked    = ($default_type == 'epub' ? 'checked' : '');
+        $pdf_is_checked     = ($default_type == 'pdf' ? 'checked' : '');
+
+        $button_content = '';
+        $button_content .= '<fieldset>';
+        $button_content .= '<legend>'.$type_label.'</legend>';
+        $button_content .= '<input id=\"azw3\" value=\"azw3\" '.$azw3_is_checked.' type=\"radio\" name=\"radio-input\" disabled=\"disabled\" />';
+        $button_content .= '<label for=\"azw3\">Azw3</label>';
+        $button_content .= '<input id=\"epub\" value=\"epub\" '.$epub_is_checked.' type=\"radio\" name=\"radio-input\" disabled=\"disabled\" />';
+        $button_content .= '<label for=\"epub\">ePub</label>';
+        $button_content .= '<input id=\"pdf\" value=\"pdf\" '.$pdf_is_checked.' type=\"radio\" name=\"radio-input\" />';
+        $button_content .= '<label for=\"pdf\">Pdf</label>';
+        $button_content .= '</fieldset>';
+
+        $current_theme = $this->grav['themes']->current();
+        if($current_theme=='learn3'){
+            if( substr($button_id,0,4) == 'leaf' ){
+                $button_title = $this->lang->translate('PLUGIN_SNAPPYGRAV.SINGLE_OR_BRANCH_EXPORT');
+                $button_content .= '<fieldset>';
+                $button_content .= '<legend>'.$option_label.'</legend>';
+                $button_content .= '<input type=\"checkbox\" id=\"enableCheckbox\" '.$checked.'>';
+                $button_content .= '<label for=\"enableCheckbox\">'.$branch_button_text.'</label>';
+                $button_content .= '</fieldset>';
+            }
+        }
+
+        $button_title .= '<input id=\"export-inline\" type=\"hidden\">';
+        $button_title .= '<input id=\"export-attach\" type=\"hidden\">';
+
+        $icn_plugin = $this->config->get('plugins.snappygrav.icn_plugin');
+        $button_icon = ( empty($icn_plugin) ? '' : '<i class="fa '.$icn_plugin.'" aria-hidden="true"></i>' );
+        $btn_plugin = $this->config->get('plugins.snappygrav.btn_plugin');
+        $button_text = ( empty($btn_plugin) ? '' : $btn_plugin );
+        $space = ( !empty($button_icon) && !empty($button_text) ? '&nbsp;' : '' );
+        
+        $button_export_text = $this->lang->translate('PLUGIN_SNAPPYGRAV.BUTTON_EXPORT_TEXT');
+        $button_export_color = $this->config->get('plugins.snappygrav.btn_export_color');
+        $button_cancel_text = $this->lang->translate('PLUGIN_SNAPPYGRAV.BUTTON_CANCEL_TEXT');
+        $button_cancel_color = $this->config->get('plugins.snappygrav.btn_cancel_color');
+
+        $button_inline_text = $this->lang->translate('PLUGIN_SNAPPYGRAV.BUTTON_INLINE_TEXT');
+        $button_attach_text = $this->lang->translate('PLUGIN_SNAPPYGRAV.BUTTON_ATTACH_TEXT');
+
+        $html = '
+            <button id="' . $button_id . '" class="export" type="button">' . $button_icon . $space . $button_text . '</button>
+            <script>
+
+                $(document).ready(function() {
+                    
+                    $("#'.$button_id.'").on("click", function () {
+                        var jc = $.confirm({
+                            theme: "'.$theme.'",
+                            closeIcon: true,
+                            closeIconClass: "fa fa-close",
+                            icon: "fa fa-download",
+                            useBootstrap: false,
+                            title: "'.$button_title.'",
+                            content: "'.$button_content.'",
+                            buttons: {
+                                inline: {
+                                    text: "'.$button_inline_text.'",
+                                    btnClass: "btn-blue",
+                                    action: function() {
+                                        var inline_location = $("#export-inline").val();
+                                        document.location = inline_location;
+                                        return false;
+                                    }
+                                },
+                                attachment: {
+                                    text: "'.$button_attach_text.'",
+                                    btnClass: "btn-purple",
+                                    action: function() {
+                                        var attach_location = $("#export-attach").val();
+                                        document.location = attach_location;
+                                        return false;
+                                    }
+                                },
+                                export: {
+                                    btnData: "'.$button_data.'",
+                                    text: "'.$button_export_text.'",
+                                    btnClass: "btn-'.$button_export_color.'",
+                                    btnId: "'.$button_id.'-export",
+                                    action: function () {
+
+                                        //disable button, change awesome icon
+                                        $(".jconfirm-title-c .fa-download").removeClass(\'fa-download\').addClass(\'fa-spin fa-spinner\');
+                                        this.buttons.export.disable();
+
+                                        //get button url
+                                        var element = $("button#'.$button_id.'-export");
+                                        var url = element.attr("data-snappy");
+
+                                        //evaluates branch checkbox
+                                        var $checkbox = this.$content.find("#enableCheckbox");
+                                        if($checkbox.prop("checked")){
+                                            url = url.replace("branch:no","branch:yes");
+                                        } else {
+                                            url = url.replace("branch:yes","branch:no");
+                                        }
+                                        element.attr("data-snappy", url);
+
+                                        //evaluates export type
+                                        var checkedType = "type:"+this.$content.find("input[name=\'radio-input\']:checked").val();
+                                        if (~url.indexOf(checkedType)){
+                                            // Found it, already corresponding value
+                                        } else {
+                                            // Not Found, replace new choice
+                                            if (~url.indexOf("type:azw3")){
+                                                url = url.replace("type:azw3",checkedType);
+                                            } else if (~url.indexOf("type:epub")) {
+                                                url = url.replace("type:epub",checkedType);
+                                            } else if (~url.indexOf("type:pdf")) {
+                                                url = url.replace("type:pdf",checkedType);
+                                            }
+                                        }
+                                        element.attr("data-snappy", url);
+
+                                        $.ajax({
+                                            url: url,
+                                            dataType: "json",
+                                            method: "get"
+                                        }).done(function (data) {
+                                            if (data.status == "success") {
+                                                $("#export-inline").val(data.url_inline);
+                                                $("#export-attach").val(data.url_attach);
+                                                jc.buttons.inline.show();
+                                                jc.buttons.attachment.show();
+                                                jc.buttons.export.hide();
+                                                jc.setContent(data.message);
+                                            } else {
+                                                $.confirm({
+                                                    useBootstrap: false,
+                                                    title: data.title,
+                                                    type: "red",
+                                                    content: data.message,
+                                                    autoClose: "cancelAction|10000",
+                                                    escapeKey: "cancelAction",
+                                                    buttons: {
+                                                        cancelAction: {
+                                                            text: "Cancel"
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }).fail(function(jqXHR, textStatus, errorMsg){
+                                            $.alert({
+                                                title: "Alert!",
+                                                content: errorMsg,
+                                            });
+                                        }).always(function(){
+                                            $(".jconfirm-title-c .fa-spin").removeClass(\'fa-spin fa-spinner\').addClass(\'fa-download\');
+                                            element.prop( "disabled", false );
+                                        });
+
+                                        return false;
+                                    }
+                                },
+                                close: {
+                                    text: "'.$button_cancel_text.'",
+                                    btnClass: "btn-'.$button_cancel_color.'",
+                                    btnId: "'.$button_id.'-close",
+                                    action: function () {
+                                        return true;
+                                    }
+                                }
+                            },
+                            onOpenBefore: function() {
+                                this.buttons.inline.hide();
+                                this.buttons.attachment.hide();
+                            },
+                            onOpen: function() {
+                                var that = this;
+                                this.$content.find("button").click(function () {
+                                    that.$content.find("span").append("<br>This is awesome!!!!");
+                                });
+
+                                //initial value of the branch checkbox
+                                var element = $("button#'.$button_id.'-export");
+                                var url = element.attr("data-snappy");
+                                var $checkbox = this.$content.find("#enableCheckbox");
+                                if($checkbox.prop("checked")){
+                                    url = url.replace("branch:no","branch:yes");
+                                } else {
+                                    url = url.replace("branch:yes","branch:no");
+                                }
+                                element.attr("data-snappy", url);
+                            }
+                        });
+                    });
+                        
+                });
+            </script>
+            ';
+
+        return $html;
+    }
+
 }

@@ -1,0 +1,119 @@
+PLUGIN_SNAPPYGRAV:
+  BTN_PLUGIN: Plugin Button Text
+  ICN_PLUGIN: Plugin Button Icon
+
+  WKHTMLTOPDF_PATH: Wkhtmltopdf Path
+  WKHTMLTOPDF_PATH_HELP: Path of Binary Wkhtmltopdf
+
+  DATE_FORMAT: Date Format
+  SHORT: Short
+  LONG: Long
+
+  DEFAULT_TYPE: Default Type
+  AZW3: Azw3
+  EPUB: ePub
+  PDF: Pdf
+
+  BASICS: Basics
+  USE_BUILT_IN_CSS: Use Built in CSS
+  
+  PREFACE: Preface
+  PREFACE_TITLE: Title Status
+  PREFACE_TITLE_HELP: Displays the title of the page. Useful if not included on the same page.
+  PREFACE_AUTHOR: Author Status
+  PREFACE_AUTHOR_HELP: View the author of the page. Useful if not included on the same page.
+  PREFACE_DATE: Date Status
+  PREFACE_DATE_HELP: Displays the date of the page. Useful if not included on the same page.
+
+  BREADCRUMBS: Breadcrumbs
+  BREADCRUMBS_ENABLED: Status
+  BREADCRUMBS_ENABLED_HELP: Enables the display of crumbs.
+  BREADCRUMBS_LINK: Link
+  BREADCRUMBS_LINK_HELP: Every single crumb links to the original online page.
+  BREADCRUMBS_CURRENT: Current
+  BREADCRUMBS_CURRENT_HELP: It also shows the crumb of the current document, that is, the last crumb.
+
+  BRANCH: Branch
+  BRANCH_ENABLED: Top-Down Status
+  BRANCH_ENABLED_HELP: Adds all descending pages from the current page. The selection is made from just the top down.
+
+  JQUERY_CONFIRM: jQuery Confirm v3
+  THEME: Theme
+  LIGHT: Light
+  DARK: Dark
+  MODERN: Modern
+  SUPERVAN: Supervan
+  MATERIAL: Material
+  BOOTSTRAP: Bootstrap
+
+  BTN_EXPORT: Export Button Text
+  BTN_EXPORT_COLOR: Export Button Color
+
+  BTN_CANCEL: Cancel Button Text
+  BTN_CANCEL_COLOR: Cancel Button Color
+  
+  DEFAULT: Default
+  BLUE: Blue
+  GREEN: Green
+  RED: Red
+  ORANGE: Orange
+  PURPLE: Purple
+  DARK: Dark
+  GRAY: Gray
+
+  DOCUMENT_TYPE: Document Type
+  OPTIONS: Options
+  AN_ERROR_OCCURRED: "An error occurred"
+  CREATION_FAILED: Creation failed
+  NOT_YET_MANAGED: not yet managed!
+  WAIT_FOR_FUTURE_UPDATES: Wait for future updates.
+  INVALID_SECURITY_TOKEN_TITLE: "Invalid Security Token"
+  INVALID_SECURITY_TOKEN_TEXT: "Refresh page with <b>F5</b> and try again"
+  YOUR_DOCUMENT_IS_READY_FOR: Your %1 is ready for...
+
+  COLLECT_BRANCH: Include dependent branches
+  COMPLETE_EXPORT: Complete Document Export 
+  SINGLE_OR_BRANCH_EXPORT: Single or Branch Export
+  BUTTON_EXPORT_TEXT: Create
+  BUTTON_CANCEL_TEXT: Cancel
+
+  BUTTON_INLINE_TEXT: Reading inline
+  BUTTON_ATTACH_TEXT: Downloading
+
+  SLUG_BLOG: Folder blog
+  SLUG_BLOG_HELP: Name of the blog folder without slash (either before or after)
+
+  MONOCHROME_PRINTOUT: Monochrome printout
+  MONOCHROME_PRINTOUT_HELP: PDF will be generated in grayscale if true
+
+  BOTTOM_MARGIN: Bottom Margin
+  BOTTOM_MARGIN_HELP: Set the page bottom margin (default 10mm)
+
+  LEFT_MARGIN: Left Margin
+  LEFT_MARGIN_HELP: Set the page left margin (default 10mm)
+
+  RIGHT_MARGIN: Right Margin
+  RIGHT_MARGIN_HELP: Set the page right margin (default 10mm)
+
+  TOP_MARGIN: Top Margin
+  TOP_MARGIN_HELP: Set the page top margin (default 10mm)
+
+  PAGE_ORIENTATION: Page Orientation
+  PAGE_ORIENTATION_HELP: Set orientation to Landscape or Portrait
+  LANDSCAPE: Landscape
+  PORTRAIT: Portrait
+
+  PAGE_SIZE: Page Size
+  PAGE_SIZE_HELP: Set paper size to: A4, Letter, etc.
+  EXECUTIVE: Executive
+  FOLIO: Folio
+  LEDGER: Ledger
+  LEGAL: Legal
+  LETTER: Letter
+  TABLOID: Tabloid
+
+  DOCUMENT_TITLE: Document Title
+  DOCUMENT_TITLE_HELP: Puts the property Title in the pdf document
+
+  ZOOM_FACTOR: Zoom Factor
+  ZOOM_FACTOR_HELP: Use this zoom factor (default 1)

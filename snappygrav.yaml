@@ -1,14 +1,34 @@
-enabled: true
-built_in_css: true              # Provide a CSS to customize PDF rendering
+# Global plugin configurations.
+enabled: true                   # Set to false to disable this plugin completely.
+built_in_css: true              # Use built-in CSS of the plugin.
+wk_path: vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386                          # Path of the wkhtmltopdf program
+default_type: pdf               # Preferred document format.
 slug_blog: blog                 # For `Blog Site` skeleton with `Antimatter` theme. It is the folder which contains the posts (default = blog)
-preface_title: false            # When true print title (default = false)
-preface_author: false           # When true print author (default = false)
-preface_date: false             # When true print date (default = false)
-breadcrumbs: true               # When true print breadcrumbs (default = true)
-breadcrumbs_link: true          # When true print link to the online document (default = true)
-breadcrumbs_current: true       # When true print also the current entry (default = true)
+preface_title: true             # When true prints title (default = false)
+preface_author: true            # When true prints author (default = false)
+preface_date: true              # When true prints date (default = false)
 
-wk_path: 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386'
+breadcrumbs_enabled: true       # When true prints breadcrumbs (default = true)
+breadcrumbs_link: true          # When true prints link to the online document (default = true)
+breadcrumbs_current: true       # When true prints also the current entry (default = true)
+
+branch_enabled: true            # When true print also prints the children of the current page (default = true)
+#send_email: false               # When true sends the document just created by email (default = false)
+
+date_format: short              # Gets the date format (short or long) from the configuration of the file system.yaml
+theme: light                    # jQuery Confirm v3: theme
+btn_export: Create              # Button text to confirm
+btn_cancel: Cancel              # Button text to cancel
+btn_export_color: green         # Background color of the button to confirm
+btn_cancel_color: gray          # Background color of the button to cancel
+
+btn_plugin: Export              # Plugin button text. Nothing is printed if empty field. Make sure the text or icon is present.
+icn_plugin: fa-download         # Plugin button icon. Nothing is printed if empty field. Make sure the text or icon is present.
+btn_plugin_color: '#ffffff'     # Color of the plugin button text
+btn_plugin_bg_color: '#63e010'  # Background color of the plugin button text
+btn_plugin_hover_color: '#ffffff'   # Color of the plugin button text when mouse over
+btn_plugin_hover_bg_color: '#eb0c0c'    # Background color of the plugin button text when mouse over
+
 #allow <path>                   Allow the file or files from the specified folder to be loaded (repeatable)
 #collate                        Collate when printing multiple copies
 #cookie <name> <value>          Set an additional cookie (repeatable)
