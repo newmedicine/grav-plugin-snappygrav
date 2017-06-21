@@ -36,9 +36,11 @@ To work the plugin `snappygrav` use the following libraries:
 * [Wkhtmltopdf](http://wkhtmltopdf.org/), the open source (LGPLv3) command line tools to render HTML into PDF (minimum version required 0.12.x). The Wkhtmltopdf project maintained by [Ashish Kulkarni](https://github.com/ashkulz), originally created by [Jakob Truelsen](https://github.com/antialize), released under open source License (LGPLv3).
 * [jquery-confirm v3](https://craftpip.github.io/jquery-confirm/) library with changes.
 
-> From version v1.3.1-rc.1 these libraries are already provided in the vendor folder (knplabs/knp-snappy and h4cc/wkhtmltopdf-i386). However it is useful to know that ...
+> From version v1.3.1-rc.1 the first two libraries are already provided in the vendor folder (knplabs/knp-snappy and h4cc/wkhtmltopdf-i386). The latest library is provided by version 1.5.0.
 
-The simplest way to install these libraries is via [Composer](http://getcomposer.org/). Regarding Snappy, place yourself in the Snappygrav plugin folder and type:
+However it is useful to know that ...
+
+The simplest way to install `KnpLabs Snappy` and `Wkhtmltopdf` is via [Composer](http://getcomposer.org/). Regarding Snappy, place yourself in the Snappygrav plugin folder and type:
 
     $ composer require knplabs/knp-snappy
 
@@ -54,11 +56,12 @@ For amd64 replace with wkhtmltopdf-amd64.
 
 For now the `snappygrav` plugin as been tested for three types of sites:
 
-* `Blog Site` skeleton with `Antimatter` theme
+* [Blog Site](https://github.com/getgrav/grav-skeleton-blog-site) skeleton with [Antimatter](https://github.com/getgrav/grav-theme-antimatter) theme
+* [RTFM Site](https://github.com/getgrav/grav-skeleton-rtfm-site) skeleton with [Learn2](https://github.com/getgrav/grav-theme-learn2) theme
+* [Knowledge Base](https://github.com/Perlkonig/grav-skeleton-knowledge-base) skeleton with [Knowledge Base](https://github.com/Perlkonig/grav-theme-knowledge-base) theme
 
-* `RTFM Site` skeleton with `Learn3` theme
 
-* `Knowledge Base` skeleton/theme
+
 
 > Important: version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
 
