@@ -34,13 +34,11 @@ To work the plugin `snappygrav` use the following libraries:
 
 * [KnpLabs Snappy](https://github.com/KnpLabs/snappy), the PHP5 library allowing thumbnail, snapshot or PDF generation from a url or a html page. The library Snappy is a product of [Matthieu Bontemps](https://github.com/mbontemps) of [KNP Labs](http://KNPLabs.ch), released under the MIT License.
 * [Wkhtmltopdf](http://wkhtmltopdf.org/), the open source (LGPLv3) command line tools to render HTML into PDF (minimum version required 0.12.x). The Wkhtmltopdf project maintained by [Ashish Kulkarni](https://github.com/ashkulz), originally created by [Jakob Truelsen](https://github.com/antialize), released under open source License (LGPLv3).
-* [jquery-confirm v3](https://craftpip.github.io/jquery-confirm/) library with changes.
+* [jquery-confirm v3](https://craftpip.github.io/jquery-confirm/) library with changes. The library, produced by [Boniface Pereira](https://github.com/craftpip), is released under the MIT License.
 
 > From version v1.3.1-rc.1 the first two libraries are already provided in the vendor folder (knplabs/knp-snappy and h4cc/wkhtmltopdf-i386). The latest library is provided by version 1.5.0.
 
-However it is useful to know that ...
-
-The simplest way to install `KnpLabs Snappy` and `Wkhtmltopdf` is via [Composer](http://getcomposer.org/). Regarding Snappy, place yourself in the Snappygrav plugin folder and type:
+However it is useful to know that the simplest way to install `KnpLabs Snappy` and `Wkhtmltopdf` is via [Composer](http://getcomposer.org/). Regarding Snappy, place yourself in the Snappygrav plugin folder and type:
 
     $ composer require knplabs/knp-snappy
 
@@ -60,9 +58,6 @@ For now the `snappygrav` plugin as been tested for three types of sites:
 * [RTFM Site](https://github.com/getgrav/grav-skeleton-rtfm-site) skeleton with [Learn2](https://github.com/getgrav/grav-theme-learn2) theme
 * [Knowledge Base](https://github.com/Perlkonig/grav-skeleton-knowledge-base) skeleton with [Knowledge Base](https://github.com/Perlkonig/grav-theme-knowledge-base) theme
 
-
-
-
 > Important: version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
 
 > Important: version 1.5.0 makes changes that make it necessary to change the Twig code to add in your theme. Now, in the case of a single page and branch, you need to provide the slug and page id.
@@ -75,6 +70,12 @@ The `snappygrav` plugin must be included into your theme, where you want to disp
 
     {{ snappygrav( page.slug, page.id ) }}
 
+I've tried this string for:
+
+* `Blog Site` in `partials/blog_item.html.twig`
+* `RTFM Site` in `partials/github_link.html.twig`
+* `Knowledge Base` in `item.html.twig`
+
 ## Complete PDF
 
 You can print your all site as a PDF with:
@@ -82,6 +83,12 @@ You can print your all site as a PDF with:
     {{ snappygrav() }}
 
 > Warning: it as been tested for a standard installation, on a 50+ pages grav website.
+
+I've tried this string for:
+
+* `Blog Site` in `partials/sidebar.html.twig`
+* `RTFM Site` in `partials/sidebar.html.twig`
+* `Knowledge Base` in `partials/sidebar.html.twig`
 
 ## Settings Defaults
 

@@ -8,6 +8,7 @@
 1. [](#improved)
     * Improved page collection selection
     * Delete unnecessary redefinitions of variables within some cycles
+    * README.md cleaning
 1. [](#new)
     * Added functionality for the [knowledge-base](https://github.com/Perlkonig/grav-theme-knowledge-base) theme. See also [#10](https://github.com/iusvar/grav-plugin-snappygrav/issues/10)
     * Added the ability to print the current page [branch](https://github.com/iusvar/grav-plugin-snappygrav/issues/17) in top-down mode
