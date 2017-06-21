@@ -2,6 +2,12 @@
 
 `snappygrav` is a simple [Grav](http://github.com/getgrav/grav) plugin that allows you to easily save a page in PDF format.
 
+> NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav) to function.
+
+![SnappyGrav](assets/readme_1.png)
+
+![SnappyGrav](assets/readme_2.png)
+
 # Installation
 
 Installing the `SnappyGrav` plugin can be done in one of two ways. The GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
@@ -22,14 +28,13 @@ You should now have all the plugin files under
 
     /your/site/grav/user/plugins/snappygrav
 
-> NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav) to function
-
 ## Requirements
 
-In order to use the `snappygrav` plugin you will have to install:
+To work the plugin `snappygrav` use the following libraries:
 
 * [KnpLabs Snappy](https://github.com/KnpLabs/snappy), the PHP5 library allowing thumbnail, snapshot or PDF generation from a url or a html page. The library Snappy is a product of [Matthieu Bontemps](https://github.com/mbontemps) of [KNP Labs](http://KNPLabs.ch), released under the MIT License.
-* [Wkhtmltopdf](http://wkhtmltopdf.org/), the open source (LGPLv3) command line tools to render HTML into PDF (minimum version required 0.12.x). The Wkhtmltopdf project maintained by [Ashish Kulkarni](https://github.com/ashkulz), originally created by [Jakob Truelsen](https://github.com/antialize), released under open source License (LGPLv3)
+* [Wkhtmltopdf](http://wkhtmltopdf.org/), the open source (LGPLv3) command line tools to render HTML into PDF (minimum version required 0.12.x). The Wkhtmltopdf project maintained by [Ashish Kulkarni](https://github.com/ashkulz), originally created by [Jakob Truelsen](https://github.com/antialize), released under open source License (LGPLv3).
+* [jquery-confirm v3](https://craftpip.github.io/jquery-confirm/) library with changes.
 
 > From version v1.3.1-rc.1 these libraries are already provided in the vendor folder (knplabs/knp-snappy and h4cc/wkhtmltopdf-i386). However it is useful to know that ...
 
@@ -44,8 +49,6 @@ While for wkhtmltopdf, for i386, as follows:
 For amd64 replace with wkhtmltopdf-amd64.
 
 > Note: Binaries for Microsoft Windows, also installable with composer, can be found here: [github.com/wemersonjanuario/wkhtmltopdf-windows](https://github.com/wemersonjanuario/wkhtmltopdf-windows). Sorry unproved, I live in Ubuntu :-)
-
-> The 1.5.0 version uses the [jquery-confirm v3](https://craftpip.github.io/jquery-confirm/) library.
 
 # Usage
 
@@ -118,12 +121,6 @@ zoom: 1                                 # Use this zoom factor (default 1) <floa
 ```
 
 > Note: The expected values for the Paper Size are really many, to know what you are going to read them directly in the [source file](https://github.com/wkhtmltopdf/wkhtmltopdf/blob/master/src/lib/pdfsettings.cc) from line 174 to line 203.
-
-# Customizing the Settings
-
-# Creating a "SnappyGrav" Link
-
-![SnappyGrav](assets/readme_1.png)
 
 # Updating
 
