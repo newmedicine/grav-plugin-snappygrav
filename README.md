@@ -49,10 +49,13 @@ For amd64 replace with wkhtmltopdf-amd64.
 
 # Usage
 
-> Warning: for now the `snappygrav` plugin as been tested for three types of sites:
-    * `Blog Site` skeleton with `Antimatter` theme
-    * `RTFM Site` skeleton with `Learn3` theme
-    * `Knowledge Base` skeleton/theme
+For now the `snappygrav` plugin as been tested for three types of sites:
+
+* `Blog Site` skeleton with `Antimatter` theme
+
+* `RTFM Site` skeleton with `Learn3` theme
+
+* `Knowledge Base` skeleton/theme
 
 > Important: version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
 
