@@ -2,7 +2,12 @@
 PLUGIN_SNAPPYGRAV:
   BTN_PLUGIN: Testo pulsante plugin
   ICN_PLUGIN: Icona pulsante plugin
-  WKHTMLTOPDF_PATH: Percorso Wkhtmltopdf
+  WKHTMLTOPDF: Wkhtmltopdf
+  WKHTMLTOPDF_ABSOLUTE_POS: Posizionamento sotto
+  WKHTMLTOPDF_PLUGIN: Plugin
+  WKHTMLTOPDF_OS: Sistema Operativo
+  WKHTMLTOPDF_PATH_RULES: 'Regole di percorso:<br/>- parziale, se <b>Posizionamento sotto</b> prevede <b>Plugin</b> (es. <i>vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386</i>)<br/>- assoluto, se <b>Posizionamento sotto</b> prevede <b>Sistema Operativo</b> (es. <i>/usr/local/bin/wkhtmltopdf</i>)<br/>In entrambi i casi, quando <b>Percorso</b> è lasciato vuoto, i rispettivi esempi sono usati come valori di default.'
+  WKHTMLTOPDF_PATH: Percorso
   WKHTMLTOPDF_PATH_HELP: Percorso del programma Wkhtmltopdf
   DATE_FORMAT: Formato data
   SHORT: Breve

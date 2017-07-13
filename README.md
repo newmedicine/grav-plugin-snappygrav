@@ -6,10 +6,6 @@
 
 ![SnappyGrav](assets/readme_1.png)
 
-![SnappyGrav](assets/readme_2.png)
-
-![SnappyGrav](assets/readme_3.png)
-
 # Installation
 
 Installing the `SnappyGrav` plugin can be done in one of two ways. The GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
@@ -37,6 +33,8 @@ To work the plugin `snappygrav` use the following libraries:
 * [KnpLabs Snappy](https://github.com/KnpLabs/snappy), the PHP5 library allowing thumbnail, snapshot or PDF generation from a url or a html page. The library Snappy is a product of [Matthieu Bontemps](https://github.com/mbontemps) of [KNP Labs](http://KNPLabs.ch), released under the MIT License.
 * [Wkhtmltopdf](http://wkhtmltopdf.org/), the open source (LGPLv3) command line tools to render HTML into PDF (minimum version required 0.12.x). The Wkhtmltopdf project maintained by [Ashish Kulkarni](https://github.com/ashkulz), originally created by [Jakob Truelsen](https://github.com/antialize), released under open source License (LGPLv3).
 * [jquery-confirm v3](https://craftpip.github.io/jquery-confirm/) library with changes. The library, produced by [Boniface Pereira](https://github.com/craftpip), is released under the MIT License.
+* [FileSaver](https://github.com/eligrey/FileSaver.js) library, produced by [Eli Grey](https://github.com/eligrey), released under the MIT License.
+* [base64-binary.js](https://github.com/danguer/blog-examples/blob/master/js/base64-binary.js) library, produced by [Daniel Guerrero](https://github.com/danguer), released under the BSD 2-clause "Simplified" License.
 
 > From version v1.3.1-rc.1 the first two libraries are already provided in the vendor folder (knplabs/knp-snappy and h4cc/wkhtmltopdf-i386). The latest library is provided by version 1.5.0.
 
@@ -62,15 +60,13 @@ For now the `snappygrav` plugin as been tested for three types of sites:
 
 > Important: version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
 
-> Important: version 1.5.0 makes changes that make it necessary to change the Twig code to add in your theme. Now, in the case of a single page and branch, you need to provide the slug and page id.
-
 The `snappygrav` plugin to include images requires a `true` value for the `Absolute URLs` in the `/your/site/grav/user/config/system.yaml` file. If you are using `Admin` plugin select the following links: `Configuration`, `System`, `Yes` for `Absolute URLs` and save.
 
 ## Single document or Branch
 
 The `snappygrav` plugin must be included into your theme, where you want to display the PDF text or icon, as follows:
 
-    {{ snappygrav( page.slug, page.id ) }}
+    {{ snappygrav( page.route ) }}
 
 I've tried this string for:
 
@@ -99,6 +95,7 @@ You can do this configuration in the plugin's configuration.  Simply copy the `u
 ```
 enabled: true                           # Set to false to disable this plugin completely.
 built_in_css: true                      # Use built-in CSS of the plugin.
+wk_absolute_pos: false                  # True meaning under the plugin, fake under the operating system (default = false)
 wk_path: vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386
                                         # Path of the wkhtmltopdf program
 default_type: pdf                       # Preferred document format.

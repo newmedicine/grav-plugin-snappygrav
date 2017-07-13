@@ -2,7 +2,12 @@
 PLUGIN_SNAPPYGRAV:
   BTN_PLUGIN: Plugin Button Text
   ICN_PLUGIN: Plugin Button Icon
-  WKHTMLTOPDF_PATH: Wkhtmltopdf Path
+  WKHTMLTOPDF: Wkhtmltopdf
+  WKHTMLTOPDF_ABSOLUTE_POS: Positioning under
+  WKHTMLTOPDF_PLUGIN: Plugin
+  WKHTMLTOPDF_OS: Operating System
+  WKHTMLTOPDF_PATH_RULES: 'Path Rules:<br/>- Partial, if <b>Positioning under</b> provides <b>Plugins</b> (eg <i>vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386</i>)<br/>- Absolute, if <b>Positioning under</b> provides <b>Operating System</b> (eg <i>/usr/local/bin/wkhtmltopdf</i>)<br/>In both cases, when <b>Path</b> is left blank, the respective examples are used as default values.'
+  WKHTMLTOPDF_PATH: Path
   WKHTMLTOPDF_PATH_HELP: Path of Binary Wkhtmltopdf
   DATE_FORMAT: Date Format
   SHORT: Short

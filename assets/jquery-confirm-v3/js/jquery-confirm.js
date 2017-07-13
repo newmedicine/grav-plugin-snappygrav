@@ -605,7 +605,8 @@ var jconfirm, Jconfirm;
                 }
 
                 //iusvar 9giu2017
-                that.buttons[key].btnData = (typeof button.btnData != 'undefined') ? ' data-snappy="'+button.btnData+'" ' : '';
+                //that.buttons[key].btnData = (typeof button.btnData != 'undefined') ? ' data-snappy="'+button.btnData+'" ' : '';
+                that.buttons[key].btnData = (typeof button.btnData != 'undefined') ? ' '+button.btnData+' ' : '';
                 that.buttons[key].id = (typeof button.btnId != 'undefined') ? 'id="'+button.btnId+'" ' : '';
                 
                 that.buttons[key].text = button.text || key;

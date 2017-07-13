@@ -5,36 +5,20 @@ use Grav\Common\Grav;
 use Grav\Common\Utils;
 use RocketTheme\Toolbox\File\JsonFile;
 
-
 class SnappyManager
 {
-    public $user;
     public $grav;
-    public $route;
-    protected $session;
     public $json_response;
     protected $post;
     protected $task;
 
     protected $lang;
 
-    public function __construct(Grav $grav, $base, $location, $route)
+    public function __construct(Grav $grav)
     {
         $this->grav     = $grav;
         $this->config   = $this->grav['config'];
-        $this->base     = $base;
-        $this->route    = $route;
-        $this->user     = $this->grav['user'];
-        $this->session  = $this->grav['session'];
-        $this->uri      = $this->grav['uri'];
-
         $this->lang = $this->grav['language'];
-    }
-
-
-    public function session()
-    {
-        return $this->session;
     }
 
 
@@ -125,64 +109,12 @@ class SnappyManager
     }
 
 
-    public function setRedirect($path, $code = 303)
-    {
-        $this->redirect     = $path;
-        $this->redirectCode = $code;
-    }
-
-
-    public function redirect()
-    {
-        if (!$this->redirect) {
-            return;
-        }
-
-        $base           = $this->base;
-        $this->redirect = '/' . ltrim($this->redirect, '/');
-        $multilang      = $this->isMultilang();
-
-        $redirect = '';
-        if ($multilang) {
-            $langPrefix = '/' . $this->grav['session']->admin_lang;
-            if (!Utils::startsWith($base, $langPrefix . '/')) {
-                $base = $langPrefix . $base;
-            }
-            
-            if (Utils::pathPrefixedByLangCode($base) && Utils::pathPrefixedByLangCode($this->redirect)
-                && substr($base,
-                    0, 4) != substr($this->redirect, 0, 4)
-            ) {
-                $redirect = $this->redirect;
-            } else {
-                if (!Utils::startsWith($this->redirect, $base)) {
-                    $this->redirect = $base . $this->redirect;
-                }
-            }
-
-        } else {
-            if (!Utils::startsWith($this->redirect, $base)) {
-                $this->redirect = $base . $this->redirect;
-            }
-        }
-
-        if (!$redirect) {
-            $redirect = $this->redirect;
-        }
-
-        $this->grav->redirect($redirect, $this->redirectCode);
-    }
-
-
     protected function taskSnappy()
     {
         $export_branch  = $this->grav['uri']->param('branch');
-        $export_id      = $this->grav['uri']->param('id');
-        $export_leaf    = $this->grav['uri']->param('leaf');
+        $export_route   = $this->grav['uri']->param('route');
+        $export_route   = str_replace('@','/',$export_route);
         $export_type    = $this->grav['uri']->param('type');
-        
-        $download       = $this->grav['uri']->param('download');
-        $content_disp   = $this->grav['uri']->param('codisp');
 
         //For now only the pdf format is handled
         if( $export_type ){
@@ -196,25 +128,10 @@ class SnappyManager
             }
         }
 
-        //The newly created document is available in the tmp folder
-        if ($download) {
-            $file = base64_decode(urldecode($download));
-            $pdfs_root_dir = $this->grav['locator']->findResource('tmp://', true);
-
-            if (substr($file, 0, strlen($pdfs_root_dir)) !== $pdfs_root_dir) {
-                header('HTTP/1.1 401 Unauthorized');
-                exit();
-            }
-
-            if($content_disp=='attach'){
-                Utils::download($file, true);
-            } else {
-                Utils::download($file, false);
-            }
-        }
-        
         try {
-            $export = $this->makeDocument($export_leaf, $export_branch, $export_id);
+            $return_value = $this->makeDocument($export_route, $export_branch);
+            $encoded_pdf = $return_value['encoded_pdf'];
+            $filename = $return_value['filename'];
         } catch (\Exception $e) {
             $this->json_response = [
                 'status'    => 'error',
@@ -224,112 +141,129 @@ class SnappyManager
             return true;
         }
 
-        $download = urlencode(base64_encode($export));
-
-        //http://stackoverflow.com/questions/36201927/laravel-5-2-how-to-return-a-pdf-as-part-of-a-json-response
-        //$pdf = base64_encode(file_get_contents( $export )); //File contents
-
-        $uri = rtrim($this->grav['uri']->rootUrl(true), '/');
-
-        $url_inline = $uri . '/codisp:inline/snappytask:snappy/download:' . $download . '/snappy-nonce:' . Utils::getNonce('snappy-form');
-        $url_attach = $uri . '/codisp:attach/snappytask:snappy/download:' . $download . '/snappy-nonce:' . Utils::getNonce('snappy-form');
-
-        $btn_plugin = $this->lang->translate('PLUGIN_SNAPPYGRAV.BTN_PLUGIN');
-        $log = JsonFile::instance($this->grav['locator']->findResource("log://export.log", true, true));
-        $log->content([
-            'time'      => time(),
-            'location'  => $export
-        ]);
-        $log->save();
-
+        $btn_plugin         = $this->lang->translate('PLUGIN_SNAPPYGRAV.BTN_PLUGIN');
         $inline_button      = $this->lang->translate('PLUGIN_SNAPPYGRAV.INLINE');
         $attachment_button  = $this->lang->translate('PLUGIN_SNAPPYGRAV.ATTACHMENT');
         $message            = $this->lang->translate('PLUGIN_SNAPPYGRAV.YOUR_DOCUMENT_IS_READY_FOR');
-
-        //$export_type = 'Pdf';
-        $message = str_replace('%1', strtoupper($export_type), $message);
+        $message            = str_replace('%1', strtoupper($export_type), $message);
 
         $this->json_response = [
             'status'        => 'success',
-            'url_inline'    => $url_inline,
-            'url_attach'    => $url_attach,
-            'message'       => $message
+            'message'       => $message,
+            'encoded_pdf'   => $encoded_pdf,
+            'filename'      => $filename
         ];
 
         return true;
     }
 
 
-    protected function makeDocument($leaf, $branch, $id)
+    protected function makeDocument($route, $branch)
     {
-        $target = $leaf;
-        $bough  = $branch;
-        $cid    = $id;
-        $option = ( empty($target) ? 'completepdf' : '');
-        
-        $current_theme = $this->grav['themes']->current();
-        switch ($current_theme) {
-            case 'antimatter':
-                $where = DS . $this->config->get('plugins.snappygrav.slug_blog');
-                if(empty($where)) $where = DS . 'blog';
-                $my_path='@page.children';
-                break;
-            case 'knowledge-base':
-                $where = $this->grav['config']->get('themes.knowledge-base')['params']['articles']['root'];
-                if(empty($where)) $where = DS . 'home';
-                $my_path='@page.children';
-                break;
-            case 'learn3':
-                $where = DS;
-                //$my_path='@page.children';
-                $my_path='@root.descendants'; //see https://learn.getgrav.org/content/collections
-                break;
-        }
-
-        $pages = $this->grav['page'];
-        $page_children = $pages->evaluate([$my_path => $where ]);
-        
-        $collection = $page_children;
-        if( $current_theme != 'learn2' && $current_theme != 'learn3' ){
-            $collection = $page_children->order('date', 'desc');
-        }
-
+        $page = $this->grav['page'];
+        $twig = $this->grav['twig'];
         $parameters = [];
         $html = [];
+        $filename = 'completepdf';
+        $temp_html = '';
         
-        foreach ($collection as $page) {
+        if( !empty($route) ) { //single or branch
+            $found = $page->find( $route );
+            $parameters['branch'] = ($branch == 'yes' ? true: false);
+            $parameters['breadcrumbs']  = $this->get_crumbs( $found );
+            $filename = $found->title();
+            $temp_html = $twig->processTemplate('snappygrav.html.twig', ['page' => $found, 'parameters' => $parameters]);
+            $html[] = preg_replace('/<iframe>.*<\/iframe>/is', '', $temp_html);
+        }
 
-            $slug = $page->slug();
-            $id   = $page->id();
+        if( empty($route) ) { //completepdf
 
-            $twig = $this->grav['twig'];
-            if($slug == $target && $id == $cid || $option == "completepdf"){
+            $current_theme = $this->grav['themes']->current();
+            switch ($current_theme) {
+                case 'antimatter':
+                    $where = DS . $this->config->get('plugins.snappygrav.slug_blog');
+                    if(empty($where)) $where = DS . 'blog';
+                    $my_path='@page.children';
+                    break;
+                case 'knowledge-base':
+                    $where = $this->grav['config']->get('themes.knowledge-base')['params']['articles']['root'];
+                    if(empty($where)) $where = DS . 'home';
+                    $my_path='@page.children';
+                    break;
+                case 'learn3':
+                    $where = DS;
+                    $my_path='@root.descendants'; //see https://learn.getgrav.org/content/collections
+                    break;
+            }
+            $page_children = $page->evaluate([$my_path => $where ]);
+            $collection = $page_children;
+            if( $current_theme != 'learn2' && $current_theme != 'learn3' ){
+                $collection = $page_children->order('date', 'desc');
+            }
 
-                $filename = $slug;
-
-                $parameters['theme']        = $current_theme;
+            foreach ($collection as $page) {
                 $parameters['breadcrumbs']  = $this->get_crumbs( $page );
-                $parameters['bough']        = ($bough == 'yes' ? true: false);
-
-                $html[] = $twig->processTemplate('snappygrav.html.twig', ['page' => $page, 'parameters' => $parameters]);
+                $parameters['branch']       = ($branch == 'yes' ? true : false );
+                $temp_html = $twig->processTemplate('snappygrav.html.twig', ['page' => $page, 'parameters' => $parameters]);
+                $html[] = preg_replace('/<iframe>.*<\/iframe>/is', '', $temp_html);
             }
         }
         
-        if($option == 'completepdf'){
-            $filename = $_SERVER['SERVER_NAME'];
+        $encoded_pdf = $this->runWk( $html );
+
+        $return_value = array();
+        $return_value['encoded_pdf'] = $encoded_pdf;
+        $return_value['filename'] = $filename;
+
+        return $return_value;
+    }
+
+
+    protected function get_crumbs( $page )
+    {
+        $current = $page;
+        $hierarchy = array();
+        while ($current && !$current->root()) {
+            $hierarchy[$current->url()] = $current;
+            $current = $current->parent();
+        }
+        $home = $this->grav['pages']->dispatch('/');
+        if ($home && !array_key_exists($home->url(), $hierarchy)) {
+            $hierarchy[] = $home;
+        }
+        $elements = array_reverse($hierarchy);
+        $crumbs = array();
+        foreach ($elements as $key => $crumb) {
+            $crumbs[] = [ 'route' => $crumb->route(), 'title' => $crumb->title() ];
         }
 
-        // Path of created pdf
-        $send_path = ROOT_DIR . 'tmp' . DS . $filename. '.pdf';
+        return $crumbs;
+    }
+
+
+    protected function runWk( $html )
+    {
+        // Placement/Path of the wkhtmltopdf program
+        $wk_absolute_pos = ( $this->config->get('plugins.snappygrav.wk_absolute_pos') ? true : false );
+        $wk_path = $this->config->get('plugins.snappygrav.wk_path');
+        if( $wk_absolute_pos ) {
+            //true, absolute, under o.s.
+            $wk_path = ( empty($wk_path) ? '/usr/local/bin/wkhtmltopdf' : $wk_path );
+        } else {
+            //false, relative, under plugin
+            $wk_path_prepend = ROOT_DIR .'user/plugins/snappygrav/';
+            $wk_path = ( empty($wk_path) ? $wk_path_prepend . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386' : $wk_path_prepend . $wk_path );
+        }
         
-        // Path of the wkhtmltopdf program
-        $wk_path = ROOT_DIR .'user/plugins/snappygrav/'. $this->config->get('plugins.snappygrav.wk_path');
-        if( (empty($wk_path)) || (!file_exists($wk_path)) ) $wk_path = ROOT_DIR .'user/plugins/snappygrav/'. 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386';
+        //$wk_path = ROOT_DIR .'user/plugins/snappygrav/'. $this->config->get('plugins.snappygrav.wk_path');
+        //if( (empty($wk_path)) || (!file_exists($wk_path)) ) $wk_path = ROOT_DIR .'user/plugins/snappygrav/'. 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386';
 
         // Check if wkhtmltopdf-i386 is executable
-        $perms = fileperms( $wk_path );
-        if($perms!=33261){
-            @chmod($wk_path, 0755); //33261
+        if (file_exists($wk_path)) {
+            $perms = fileperms( $wk_path );
+            if($perms!=33261){
+                @chmod($wk_path, 0755); //33261
+            }
         }
 
         // If the file does not exist displays an alert and exits the procedure
@@ -338,10 +272,10 @@ class SnappyManager
             echo '<script type="text/javascript">alert("'.$message.'");</script>';
             break;
         }
-
-        $snappy = new \Knp\Snappy\Pdf($wk_path);
-
-        // It takes some parameters from snappygrav.yaml file
+        
+        $snappy = new \Knp\Snappy\Pdf( $wk_path );
+        
+        //It takes some parameters from snappygrav.yaml file
         //$snappy->setOption('default-header', true);
         //$snappy->setOption('header-left',$matter['page_title']);
         //$snappy->setOption('header-right','[page]/[toPage]');
@@ -380,31 +314,10 @@ class SnappyManager
         $zoom = $this->config->get('plugins.snappygrav.zoom');
         if($zoom) $snappy->setOption('zoom', $zoom);
 
-        //echo ($snappy->getOutputFromHtml($html));
-        $snappy->generateFromHtml($html, $send_path,[],true);
-        return $send_path;
-    }
-
-
-    protected function get_crumbs( $page )
-    {
-        $current = $page;
-        $hierarchy = array();
-        while ($current && !$current->root()) {
-            $hierarchy[$current->url()] = $current;
-            $current = $current->parent();
-        }
-        $home = $this->grav['pages']->dispatch('/');
-        if ($home && !array_key_exists($home->url(), $hierarchy)) {
-            $hierarchy[] = $home;
-        }
-        $elements = array_reverse($hierarchy);
-        $crumbs = array();
-        foreach ($elements as $key => $crumb) {
-            $crumbs[] = [ 'route' => $crumb->route(), 'title' => $crumb->title() ];
-        }
-
-        return $crumbs;
+        $pdf = $snappy->getOutputFromHtml($html);
+        $encoded_pdf = base64_encode($pdf);
+        
+        return $encoded_pdf;
     }
 
 }

@@ -1,10 +1,11 @@
 # v1.5.0
-## xx/06/2017
+## xx/07/2017
 
 1. [](#bugfix)
     * Update copyright period of the LICENSE file
     * Update blueprints.yaml
     * Update languages.yaml
+    * Fixed settings for wkhtmltopdf installed on the server [#19](https://github.com/iusvar/grav-plugin-snappygrav/issues/19)
 1. [](#improved)
     * Improved page collection selection
     * Delete unnecessary redefinitions of variables within some cycles
@@ -12,6 +13,8 @@
 1. [](#new)
     * Added functionality for the [knowledge-base](https://github.com/Perlkonig/grav-theme-knowledge-base) theme. See also [#10](https://github.com/iusvar/grav-plugin-snappygrav/issues/10)
     * Added the ability to print the current page [branch](https://github.com/iusvar/grav-plugin-snappygrav/issues/17) in top-down mode
+    * Now the document is created on time without prior saving on the server
+    * Added Nonce features
 
 # v1.4.2
 ## 23/05/2017

@@ -71,7 +71,27 @@ form:
       help: PLUGIN_SNAPPYGRAV.SLUG_BLOG_HELP
       validate:
         type: string
-        
+
+    wkhtmltopdf:
+      type: section
+      title: PLUGIN_SNAPPYGRAV.WKHTMLTOPDF
+      underline: false
+      
+    wk_absolute_pos:
+      type: toggle
+      label: PLUGIN_SNAPPYGRAV.WKHTMLTOPDF_ABSOLUTE_POS
+      default: 0
+      highlight: 0
+      options:
+        0: PLUGIN_SNAPPYGRAV.WKHTMLTOPDF_PLUGIN
+        1: PLUGIN_SNAPPYGRAV.WKHTMLTOPDF_OS
+      validate:
+        type: bool
+
+    wk_spacer:
+      type: spacer
+      text: PLUGIN_SNAPPYGRAV.WKHTMLTOPDF_PATH_RULES
+           
     wk_path:
       type: text
       size: large
