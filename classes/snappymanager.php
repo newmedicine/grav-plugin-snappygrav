@@ -267,11 +267,11 @@ class SnappyManager
         }
 
         // If the file does not exist displays an alert and exits the procedure
-        if (!file_exists($wk_path)) {
+        /*if (!file_exists($wk_path)) {
             $message = 'The file\n '.$wk_path.'\n does not exist!';
             echo '<script type="text/javascript">alert("'.$message.'");</script>';
             break;
-        }
+        }*/
         
         $snappy = new \Knp\Snappy\Pdf( $wk_path );
         

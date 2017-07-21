@@ -1,5 +1,11 @@
+# v1.5.1
+## 21/07/2017
+
+1. [](#bugfix)
+    * Deleted unnecessary control [#20](https://github.com/iusvar/grav-plugin-snappygrav/issues/20)
+
 # v1.5.0
-## xx/07/2017
+## 20/07/2017
 
 1. [](#bugfix)
     * Update copyright period of the LICENSE file
