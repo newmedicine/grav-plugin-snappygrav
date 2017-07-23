@@ -1,11 +1,17 @@
+# v1.5.2
+## 07/23/2017
+
+1. [](#bugfix)
+    * Correct dates in wrong format in CHANGELOG.md [Plugin, upgrade issues](https://discourse.getgrav.org/t/plugin-upgrade-issues/4161)
+
 # v1.5.1
-## 21/07/2017
+## 07/21/2017
 
 1. [](#bugfix)
     * Deleted unnecessary control [#20](https://github.com/iusvar/grav-plugin-snappygrav/issues/20)
 
 # v1.5.0
-## 20/07/2017
+## 07/20/2017
 
 1. [](#bugfix)
     * Update copyright period of the LICENSE file
@@ -23,7 +29,7 @@
     * Added Nonce features
 
 # v1.4.2
-## 23/05/2017
+## 05/23/2017
 
 1. [](#bugfix)
     * Replaced break with exit
