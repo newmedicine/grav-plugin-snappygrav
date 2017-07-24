@@ -13,20 +13,20 @@
 # v1.5.0
 ## 07/20/2017
 
-1. [](#bugfix)
-    * Update copyright period of the LICENSE file
-    * Update blueprints.yaml
-    * Update languages.yaml
-    * Fixed settings for wkhtmltopdf installed on the server [#19](https://github.com/iusvar/grav-plugin-snappygrav/issues/19)
-1. [](#improved)
-    * Improved page collection selection
-    * Delete unnecessary redefinitions of variables within some cycles
-    * README.md cleaning
 1. [](#new)
     * Added functionality for knowledge-base theme. See also [#10](https://github.com/iusvar/grav-plugin-snappygrav/issues/10)
     * Added the ability to print the current page [#17](https://github.com/iusvar/grav-plugin-snappygrav/issues/17) in top-down mode
     * Now the document is created on time without prior saving on the server
     * Added Nonce features
+1. [](#improved)
+    * Improved page collection selection
+    * Delete unnecessary redefinitions of variables within some cycles
+    * README.md cleaning
+1. [](#bugfix)
+    * Update copyright period of the LICENSE file
+    * Update blueprints.yaml
+    * Update languages.yaml
+    * Fixed settings for wkhtmltopdf installed on the server [#19](https://github.com/iusvar/grav-plugin-snappygrav/issues/19)
 
 # v1.4.2
 ## 05/23/2017
@@ -45,20 +45,21 @@
 # v1.4.0
 ## 05/05/2017
 
+1. [](#improved)
+    * Added breadcrumbs [#16](https://github.com/iusvar/grav-plugin-snappygrav/issues/16)
 1. [](#bugfix)
     * Check if wkhtmltopdf-i386 is executable
     * Better later than ever: removed the instance that builds the `snappy` object from the `foreach` cycle 
-1. [](#improved)
-    * Added breadcrumbs [#16](https://github.com/iusvar/grav-plugin-snappygrav/issues/16)
+
 
 # v1.3.1-rc.1
 ## 04/02/2017
 
+1. [](#improved)
+    * Updated `README.md`
 1. [](#bugfix)
     * Added `composer.json` for required libraries [#13](https://github.com/iusvar/grav-plugin-snappygrav/issues/13)
     * Added `.gitattributes`
-1. [](#improved)
-    * Updated `README.md`
 
 # v1.3.0
 ## 03/30/2017
