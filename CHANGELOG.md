@@ -2,7 +2,7 @@
 ## 07/23/2017
 
 1. [](#bugfix)
-    * Correct dates in wrong format in CHANGELOG.md [Plugin, upgrade issues](https://discourse.getgrav.org/t/plugin-upgrade-issues/4161)
+    * Correct dates in wrong format in CHANGELOG.md
 
 # v1.5.1
 ## 07/21/2017
@@ -23,8 +23,8 @@
     * Delete unnecessary redefinitions of variables within some cycles
     * README.md cleaning
 1. [](#new)
-    * Added functionality for the [knowledge-base](https://github.com/Perlkonig/grav-theme-knowledge-base) theme. See also [#10](https://github.com/iusvar/grav-plugin-snappygrav/issues/10)
-    * Added the ability to print the current page [branch](https://github.com/iusvar/grav-plugin-snappygrav/issues/17) in top-down mode
+    * Added functionality for knowledge-base theme. See also [#10](https://github.com/iusvar/grav-plugin-snappygrav/issues/10)
+    * Added the ability to print the current page [#17](https://github.com/iusvar/grav-plugin-snappygrav/issues/17) in top-down mode
     * Now the document is created on time without prior saving on the server
     * Added Nonce features
 
