@@ -190,9 +190,13 @@ class SnappyManager
                     if(empty($where)) $where = DS . 'home';
                     $my_path='@page.children';
                     break;
-                case 'learn3':
+                case 'learn2':
                     $where = DS;
                     $my_path='@root.descendants'; //see https://learn.getgrav.org/content/collections
+                    break;
+                default:
+                    $where = DS;
+                    $my_path='@root.descendants';
                     break;
             }
             $page_children = $page->evaluate([$my_path => $where ]);

@@ -1,3 +1,11 @@
+# v1.5.3
+## 09/02/2017
+
+1. [](#improved)
+    * New site with working [demo](http://iusvar.alwaysdata.net/grav/)
+1. [](#bugfix)
+    * Fixed undefined variable: where [#21](https://github.com/iusvar/grav-plugin-snappygrav/issues/21)
+
 # v1.5.2
 ## 07/23/2017
 
