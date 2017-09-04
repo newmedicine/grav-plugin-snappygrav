@@ -255,7 +255,7 @@ class SnappyManager
             $wk_path = ( empty($wk_path) ? '/usr/local/bin/wkhtmltopdf' : $wk_path );
         } else {
             //false, relative, under plugin
-            $wk_path_prepend = ROOT_DIR .'user/plugins/snappygrav/';
+            $wk_path_prepend = GRAV_ROOT .'/user/plugins/snappygrav/';
             $wk_path = ( empty($wk_path) ? $wk_path_prepend . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386' : $wk_path_prepend . $wk_path );
         }
         

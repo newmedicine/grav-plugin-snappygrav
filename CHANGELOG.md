@@ -1,3 +1,9 @@
+# v1.5.5
+## 09/04/2017
+
+1. [](#bugfix)
+    * Relative path of wkhtmltopdf folder incorrect [#23](https://github.com/iusvar/grav-plugin-snappygrav/issues/23)
+
 # v1.5.4
 ## 09/04/2017
 
