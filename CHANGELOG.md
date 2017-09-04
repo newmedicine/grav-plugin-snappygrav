@@ -1,3 +1,9 @@
+# v1.5.4
+## 09/04/2017
+
+1. [](#bugfix)
+    * Branch Selection [#22](https://github.com/iusvar/grav-plugin-snappygrav/issues/22)
+
 # v1.5.3
 ## 09/04/2017
 

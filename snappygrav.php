@@ -178,7 +178,7 @@ class SnappyGravPlugin extends Plugin
         $btn_content .= '</fieldset>';
 
         $current_theme = $this->grav['themes']->current();
-        if($current_theme=='learn3'){
+        if( $current_theme=='learn2' || $current_theme=='learn3' ){
             if( substr($button_id,0,2) == 'sg' ){
                 $btn_title = $this->lang->translate('PLUGIN_SNAPPYGRAV.SINGLE_OR_BRANCH_EXPORT');
                 $btn_content .= '<fieldset>';
