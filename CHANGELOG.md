@@ -1,3 +1,9 @@
+# v1.6.0
+## 12/21/2017
+
+1. [](#new)
+    * Added settings for Print Media Type [#26](https://github.com/iusvar/grav-plugin-snappygrav/issues/26)
+
 # v1.5.5
 ## 09/04/2017
 

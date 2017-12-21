@@ -318,6 +318,13 @@ class SnappyManager
         $zoom = $this->config->get('plugins.snappygrav.zoom');
         if($zoom) $snappy->setOption('zoom', $zoom);
 
+        $print_media_type = $this->config->get('plugins.snappygrav.print-media-type');
+        if($print_media_type) {
+            $snappy->setOption('print-media-type',true);
+        } else {
+            $snappy->setOption('no-print-media-type',true);
+        }
+
         $pdf = $snappy->getOutputFromHtml($html);
         $encoded_pdf = base64_encode($pdf);
         

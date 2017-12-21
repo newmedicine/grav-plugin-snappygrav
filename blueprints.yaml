@@ -1,5 +1,5 @@
 name: SnappyGrav
-version: 1.5.5
+version: 1.6.0
 description: Save a page, branch or all website in PDF format
 icon: file-pdf-o
 author:
@@ -398,3 +398,15 @@ form:
       default: 1
       validate:
         type: number
+
+    print-media-type:
+      type: toggle
+      label: PLUGIN_SNAPPYGRAV.PRINT_MEDIA_TYPE
+      help: PLUGIN_SNAPPYGRAV.PRINT_MEDIA_TYPE_HELP
+      highlight: 1
+      default: 1
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool

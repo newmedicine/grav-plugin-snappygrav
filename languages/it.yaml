@@ -101,3 +101,5 @@ PLUGIN_SNAPPYGRAV:
   DOCUMENT_TITLE_HELP: Mette il titolo fra le proprietà nel documento PDF
   ZOOM_FACTOR: Fattore di zoom
   ZOOM_FACTOR_HELP: Usa questo fattore di zoom (predefinito 1)
+  PRINT_MEDIA_TYPE: Print Media Type
+  PRINT_MEDIA_TYPE_HELP: Usa il supporto di stampa anziché lo schermo (impostazione predefinita). La cartella snappygrav/assets/css/ contiene il file paper.css in cui è possibile inserire le proprietà degli elementi in base al @media rule desiderato.

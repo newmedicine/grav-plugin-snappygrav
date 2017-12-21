@@ -5,8 +5,9 @@
         <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
     {% endblock %}
     {% block stylesheets %}
-        {{ assets.css() }}
+        {% do assets.addCss('plugin://snappygrav/assets/css/paper.css', 100) %}
     {% endblock %}
+    {{ assets.css() }}
 </head>
 <body>
     {% block body %}
