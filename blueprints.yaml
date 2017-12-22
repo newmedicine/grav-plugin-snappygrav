@@ -399,7 +399,7 @@ form:
       validate:
         type: number
 
-    print-media-type:
+    print_media_type:
       type: toggle
       label: PLUGIN_SNAPPYGRAV.PRINT_MEDIA_TYPE
       help: PLUGIN_SNAPPYGRAV.PRINT_MEDIA_TYPE_HELP

@@ -318,7 +318,7 @@ class SnappyManager
         $zoom = $this->config->get('plugins.snappygrav.zoom');
         if($zoom) $snappy->setOption('zoom', $zoom);
 
-        $print_media_type = $this->config->get('plugins.snappygrav.print-media-type');
+        $print_media_type = $this->config->get('plugins.snappygrav.print_media_type');
         if($print_media_type) {
             $snappy->setOption('print-media-type',true);
         } else {

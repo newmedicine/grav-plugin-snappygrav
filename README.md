@@ -60,6 +60,8 @@ For now the `snappygrav` plugin as been tested for three types of sites:
 
 > Important: version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
 
+> News: from version 1.6.0. is compatible with the `markdown-notices` plugin by [Grav Team](https://github.com/getgrav/grav-plugin-markdown-notices).
+
 The `snappygrav` plugin to include images requires a `true` value for the `Absolute URLs` in the `/your/site/grav/user/config/system.yaml` file. If you are using `Admin` plugin select the following links: `Configuration`, `System`, `Yes` for `Absolute URLs` and save.
 
 ## Single document or Branch
@@ -127,6 +129,7 @@ margin_top: 10                          # <unitreal> Set the page top margin (de
 orientation: Portrait                   # Set orientation to Landscape or Portrait
 title: true                             # I prefer True or False, getting title from site page
 zoom: 1                                 # Use this zoom factor (default 1) <float>
+print_media_type: true                  # Use print media-type instead of screen (default).
 ```
 
 > Note: The expected values for the Paper Size are really many, to know what you are going to read them directly in the [source file](https://github.com/wkhtmltopdf/wkhtmltopdf/blob/master/src/lib/pdfsettings.cc) from line 174 to line 203.
