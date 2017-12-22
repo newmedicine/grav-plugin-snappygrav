@@ -60,7 +60,7 @@ For now the `snappygrav` plugin as been tested for three types of sites:
 
 > Important: version 1.2.0 makes changes that make it necessary to change the Twig code to add in your theme.
 
-> News: from version 1.6.0. is compatible with the `markdown-notices` plugin by [Grav Team](https://github.com/getgrav/grav-plugin-markdown-notices).
+> News: from version 1.6.0. is compatible with the [markdown-notices](https://github.com/getgrav/grav-plugin-markdown-notices) plugin by [Grav Team](https://getgrav.org/about)
 
 The `snappygrav` plugin to include images requires a `true` value for the `Absolute URLs` in the `/your/site/grav/user/config/system.yaml` file. If you are using `Admin` plugin select the following links: `Configuration`, `System`, `Yes` for `Absolute URLs` and save.
 
