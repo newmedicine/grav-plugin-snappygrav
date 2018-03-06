@@ -1,9 +1,9 @@
-name: SnappyGrav
+name: SnappyGrav NewMedicine
 version: 1.6.0
 description: Save a page, branch or all website in PDF format
 icon: file-pdf-o
 author:
-  name: Severo Iuliano
+  name: Severo Iuliano (modified by newmedicine)
   email: severoiuliano@gmail.com
   url: http://iusvar.alwaysdata.net/grav/
 homepage: https://github.com/iusvar/grav-plugin-snappygrav
